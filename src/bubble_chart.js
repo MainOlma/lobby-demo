@@ -36,7 +36,7 @@ function bubbleChart() {
   };
 
   // @v4 strength to apply to the position forces
-  var forceStrength = 0.05;
+  var forceStrength = 0.03;
 
   // These will be set in create_nodes and create_vis
   var svg = null;
@@ -58,9 +58,10 @@ function bubbleChart() {
   // @v4 Before the charge was a stand-alone attribute
   //  of the force layout. Now we can use it as a separate force!
   function charge(d) {
-    return -Math.pow(d.radius, 2.1) * forceStrength;
+    return -Math.pow(d.radius, 2.2) * forceStrength;
   }
-    var links = [
+
+  var links = [
         {source: 0, target: 1},
         {source: 0, target: 2},
         {source: 0, target: 3},
@@ -75,7 +76,7 @@ function bubbleChart() {
   // @v4 We create a force simulation now and
   //  add forces to it.
   var simulation = d3.forceSimulation()
-    .velocityDecay(0.1)
+    .velocityDecay(0.2)
     .force('x', d3.forceX().strength(forceStrength).x(center.x))
     .force('y', d3.forceY().strength(forceStrength).y(center.y))
     .force('charge', d3.forceManyBody().strength(charge))
@@ -122,7 +123,7 @@ function bubbleChart() {
     // working with data.
     var myNodes = rawData.map(function (d) {
       return {
-        id: d.id,
+        id: +d.id,
         radius: radiusScale(+d.rating),
         value: +d.rating,
         name: d.fio,
@@ -136,7 +137,6 @@ function bubbleChart() {
 
     // sort them to prevent occlusion of smaller nodes.
     myNodes.sort(function (a, b) { return b.value - a.value; });
-
     return myNodes;
   }
 
@@ -221,6 +221,27 @@ function bubbleChart() {
   }
 
 
+    function bigBubbles() {
+    var bigNodes=nodes.filter(function(d) { return d.value > 8 });
+        hideYearTitles();
+        bubbles.style("visibility", "visible");
+        bubbles.filter(function(d) { return d.value <= 8 })
+            .style("visibility", "hidden");
+        simulation.nodes(bigNodes);
+        simulation.force('x', d3.forceX().strength(forceStrength).x(center.x));
+        simulation.alpha(1).restart();
+    }
+    function smallBubbles() {
+        var smallNodes=nodes.filter(function(d) { return d.value < 3 });
+        hideYearTitles();
+        bubbles.style("visibility", "visible");
+        bubbles.filter(function(d) { return d.value >= 3 })
+            .style("visibility", "hidden");
+        simulation.nodes(smallNodes);
+        simulation.force('x', d3.forceX().strength(forceStrength).x(center.x));
+        simulation.alpha(0.6).restart();
+    }
+    
   /*
    * Sets visualization in "single group mode".
    * The year labels are hidden and the force layout
@@ -229,6 +250,8 @@ function bubbleChart() {
    */
   function groupBubbles() {
     hideYearTitles();
+      bubbles.style("visibility", "visible");
+      simulation.nodes(nodes);
 
     // @v4 Reset the 'x' force to draw the bubbles to the center.
     simulation.force('x', d3.forceX().strength(forceStrength).x(center.x));
@@ -246,7 +269,8 @@ function bubbleChart() {
    */
   function splitBubbles() {
     showYearTitles();
-
+      bubbles.style("visibility", "visible");
+      simulation.nodes(nodes);
     // @v4 Reset the 'x' force to draw the bubbles to their year centers
     simulation.force('x', d3.forceX().strength(forceStrength).x(nodeYearPos));
 
@@ -320,10 +344,18 @@ function bubbleChart() {
    * displayName is expected to be a string and either 'year' or 'all'.
    */
   chart.toggleDisplay = function (displayName) {
-    if (displayName === 'year') {
-      splitBubbles();
-    } else {
-      groupBubbles();
+    switch (displayName) {
+        case "year":
+            splitBubbles();
+            break;
+        case "bigs":
+            bigBubbles();
+            break;
+        case "smalls":
+            smallBubbles();
+            break;
+        default:
+            groupBubbles();
     }
   };
 
@@ -338,18 +370,6 @@ function bubbleChart() {
  */
 
 var myBubbleChart = bubbleChart();
-
-/*
- * Function called once data is loaded from CSV.
- * Calls bubble chart function to display inside #vis div.
- */
-function display(error, data) {
-  if (error) {
-    console.log(error);
-  }
-
-  myBubbleChart('#vis', data);
-}
 
 /*
  * Sets up the layout buttons to allow for toggling between view modes.
