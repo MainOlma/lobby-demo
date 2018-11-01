@@ -224,9 +224,9 @@ function bubbleChart() {
     function bigBubbles() {
     var bigNodes=nodes.filter(function(d) { return d.value > 8 });
         hideYearTitles();
-        bubbles.style("visibility", "visible");
+        bubbles.classed("visible",true).classed("hidden",false);
         bubbles.filter(function(d) { return d.value <= 8 })
-            .style("visibility", "hidden");
+            .classed("visible",false).classed("hidden",true);
         simulation.nodes(bigNodes);
         simulation.force('x', d3.forceX().strength(forceStrength).x(center.x));
         simulation.alpha(1).restart();
@@ -234,9 +234,9 @@ function bubbleChart() {
     function smallBubbles() {
         var smallNodes=nodes.filter(function(d) { return d.value < 3 });
         hideYearTitles();
-        bubbles.style("visibility", "visible");
+        bubbles.classed("visible",true).classed("hidden",false);
         bubbles.filter(function(d) { return d.value >= 3 })
-            .style("visibility", "hidden");
+            .classed("visible",false).classed("hidden",true);
         simulation.nodes(smallNodes);
         simulation.force('x', d3.forceX().strength(forceStrength).x(center.x));
         simulation.alpha(0.6).restart();
@@ -250,7 +250,7 @@ function bubbleChart() {
    */
   function groupBubbles() {
     hideYearTitles();
-      bubbles.style("visibility", "visible");
+      bubbles.classed("visible",true).classed("hidden",false);
       simulation.nodes(nodes);
 
     // @v4 Reset the 'x' force to draw the bubbles to the center.
@@ -269,7 +269,7 @@ function bubbleChart() {
    */
   function splitBubbles() {
     showYearTitles();
-      bubbles.style("visibility", "visible");
+      bubbles.classed("visible",true).classed("hidden",false);
       simulation.nodes(nodes);
     // @v4 Reset the 'x' force to draw the bubbles to their year centers
     simulation.force('x', d3.forceX().strength(forceStrength).x(nodeYearPos));
@@ -357,6 +357,7 @@ function bubbleChart() {
         default:
             groupBubbles();
     }
+    var total=d3.select("#total").text(d3.selectAll("circle.visible").size());
   };
 
 
