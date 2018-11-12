@@ -11,7 +11,7 @@ root.each(d => {
 
 const svg = d3.select("#tree svg")
     .style("width", "940")
-    .style("height", "2000");
+    .style("height", "7000");
 
 
 
