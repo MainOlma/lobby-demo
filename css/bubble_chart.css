@@ -77,3 +77,8 @@ a, a:visited, a:active {
     display: block;
     visibility: visible;
 }
+
+.level_0_checkbox{
+    vertical-align: middle;
+    margin-left: 5px;
+}

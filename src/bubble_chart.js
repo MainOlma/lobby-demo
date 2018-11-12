@@ -273,7 +273,6 @@ function bubbleChart() {
       simulation.nodes(nodes);
     // @v4 Reset the 'x' force to draw the bubbles to their year centers
     simulation.force('x', d3.forceX().strength(forceStrength).x(nodeYearPos));
-
     // @v4 We can reset the alpha value and restart the simulation
     simulation.alpha(1).restart();
   }
@@ -357,7 +356,7 @@ function bubbleChart() {
         default:
             groupBubbles();
     }
-    var total=d3.select("#total").text(d3.selectAll("circle.visible").size());
+    d3.select("#total").text(d3.selectAll("circle.visible").size());
   };
 
 
@@ -420,3 +419,4 @@ d3.csv('data/deputates.csv').then(function (data) {
 
 // setup the buttons.
 setupButtons();
+
