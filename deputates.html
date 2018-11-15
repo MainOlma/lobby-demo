@@ -12,14 +12,23 @@
 
 <script>
     var token = "55859e42059cd5ad0a7f148dfc89b68d8f9ba392";
-
+/*
+    fetch('http://api.duma.gov.ru/api/' + token + '/deputies.json').then(function (response) {
+        return response.json();
+    }).then(function (json) {
+        console.log(json);
+    });
+*/
     $.ajax({
-        url:  'http://api.duma.gov.ru/api/' + token + '/deputies.json',
+        url:  'https://cors-anywhere.herokuapp.com/http://api.duma.gov.ru/api/' + token + '/deputies.json',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With':'XMLHttpRequest'},
         data: {current:1},
         dataType: "jsonp",
-        crossDomain:true,
+        crossDomain:false,
         success: function(data) {
-            console.log(data);
+            console.log(JSON.stringify(data,null,2);
             // возникла ошибка, выводим код и сообщение об ошибке
             if (data.code) {
                 $(".ajax").remove();
