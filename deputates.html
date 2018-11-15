@@ -14,7 +14,7 @@
     var token = "55859e42059cd5ad0a7f148dfc89b68d8f9ba392";
 
     $.ajax({
-        url:  'http://api.duma.gov.ru/api/' + token + '/deputies.json',
+        url:  'https://cors-anywhere.herokuapp.com/http://api.duma.gov.ru/api/' + token + '/deputies.json',
         data: {current:1},
         dataType: "jsonp",
         crossDomain:true,
