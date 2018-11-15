@@ -15,9 +15,12 @@
 
     $.ajax({
         url:  'https://cors-anywhere.herokuapp.com/http://api.duma.gov.ru/api/' + token + '/deputies.json',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With':'XMLHttpRequest'},
         data: {current:1},
         dataType: "jsonp",
-        crossDomain:true,
+        crossDomain:false,
         success: function(data) {
             console.log(data);
             // возникла ошибка, выводим код и сообщение об ошибке
