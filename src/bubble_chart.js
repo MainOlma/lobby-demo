@@ -275,6 +275,16 @@ function bubbleChart() {
     simulation.force('x', d3.forceX().strength(forceStrength).x(nodeYearPos));
     // @v4 We can reset the alpha value and restart the simulation
     simulation.alpha(1).restart();
+      let e = svg.append('circle')
+          .attr('fill', 'none')
+          .attr('stroke', 'red')
+          .attr('id', 'enclose')
+
+      var encloseCircle = d3.packEnclose(bubbles)
+      console.log(encloseCircle)
+      e.attr('cx', encloseCircle.x)
+          .attr('cy', encloseCircle.y)
+          .attr('r', encloseCircle.r)
   }
 
   /*

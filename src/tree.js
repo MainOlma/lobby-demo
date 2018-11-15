@@ -59,7 +59,7 @@ return svg.node();
 
 
 tree = data => {
-    console.log(JSON.stringify(data,null,2))
+    //console.log(JSON.stringify(data,null,2))
     var stratification = d3.stratify(data)
         .id(function(d) { return d.id; })
         .parentId(function(d) { return d.parent; })
