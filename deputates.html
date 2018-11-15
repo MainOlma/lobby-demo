@@ -9,36 +9,13 @@
     <div class="ajax"></div>
 </div>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/microtpl@1.0.3/micro.js"></script>
-<script type="text/html" id="column1_tmpl">
-    <h2><b>Ищем:</b> <%=data.wording%></h2>
-    <p class="founded">
-        <b>Найдено: </b><%=data.count%>
-    </p>
 
-    <h3>Результат поиска:</h3>
-    <ul>
-        <% for ( var i = 0; i < data.laws.length; i++ ) { %>
-        <li>
-            <a href="<%=data.laws[i].url%>"><%=data.laws[i].number%></a>.
-            <%=data.laws[i].name%>
-            <i>(внесен на рассмотрение <%=data.laws[i].introductionDate%>, <a href="<%=data.laws[i].transcriptUrl%>">стенограммы обсуждений</a>)</i>
-        </li>
-        <% } %>
-    </ul>
-</script>
 <script>
     var token = "55859e42059cd5ad0a7f148dfc89b68d8f9ba392";
 
     $.ajax({
-        url:  'https://crossorigin.me/http://api.duma.gov.ru/api/' + token + '/deputies.json',
+        url:  'http://api.duma.gov.ru/api/' + token + '/deputies.json',
         data: {current:1},
-        /*"data": {
-            "status":             6,            // законопроекты, рассмотрение которых завершено
-            "registration_start": "2011-01-01", // в датой регистрации
-            "registration_end":   "2011-03-31", // с 1 января 2011 по 31 марта 2011
-            "limit":              10            // вывести первые 10 найденных законопроектов
-        },*/
         dataType: "jsonp",
         crossDomain:true,
         success: function(data) {
@@ -50,11 +27,6 @@
 
                 return false;
             }
-
-            // отправляем данные в шаблон и получаем конечный html
-            var resultHtml = tmpl("column1_tmpl", { data: data });
-            // выводим на странице результат
-            $("#column-1 .ajax").replaceWith(resultHtml);
         }
     });
 </script>
