@@ -22,7 +22,7 @@
         dataType: "jsonp",
         crossDomain:false,
         success: function(data) {
-            console.log(data);
+            console.log(JSON.stringify(data,null,2));
             // возникла ошибка, выводим код и сообщение об ошибке
             if (data.code) {
                 $(".ajax").remove();
