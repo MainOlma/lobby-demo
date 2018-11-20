@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<h1>D3.v5 Cluster Force Layout </h1>
+<p>Based on
+<a href="https://bl.ocks.org/micahstubbs/bb8a7dd10eb6b2a05db14a52ff228bdf">Micah Stubbs’s Block</a> and
+<a href="https://bl.ocks.org/mbostock/7882658">Mike Bostock’s Block</a>
+</p>
+<script src="//d3js.org/d3.v5.min.js"></script>
+<script>
+    var width = 960,
+        height = 500,
+        padding = 2, // separation between same-color nodes
+        clusterPadding = 15, // separation between different-color nodes
+        maxRadius = 10;
+
+    var n = 200, // total number of nodes
+        m = 10; // number of distinct clusters
+
+    var color = d3.scaleSequential(d3.interpolateRainbow)
+        .domain(d3.range(m));
+
+    // The largest node for each cluster
+    var clusters = new Array(m);
+
+    var nodes = d3.range(n).map(function () {
+        var i = Math.floor(Math.random() * m),
+            r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius,
+            d = {
+                cluster: i,
+                r: r,
+                x: Math.cos(i / m * 2 * Math.PI) * 200 + width / 2 + Math.random(),
+                y: Math.sin(i / m * 2 * Math.PI) * 200 + height / 2 + Math.random()
+            };
+        if (!clusters[i] || (r > clusters[i].r)) clusters[i] = d;
+        console.log(d)
+        return d;
+    });
+    const margin = {top: 100, right: 100, bottom: 100, left: 100};
+
+    // total number of nodes
+    //const n = nodes.length;
+
+    // collect clusters from nodes alternative extended code
+    /*const clusters = {};
+    nodes.forEach((node) => {
+        const radius = node.r;
+        const clusterID = node.cluster;
+        if (!clusters[clusterID] || (radius > clusters[clusterID].r)) {
+            clusters[clusterID] = node;
+        }
+    });
+    console.log('clusters', clusters);*/
+
+    const svg = d3.select('body')
+        .append('svg')
+        .attr('height', height)
+        .attr('width', width)
+        .append('g')
+    //.attr('transform', `translate(${width / 2},${height / 2})`);
+
+    var force = d3.forceSimulation()
+        .nodes(nodes)
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        //.force("gravity", d3.forceManyBody(10))
+        .force("x", d3.forceX().strength(0.02))
+        .force("y", d3.forceY().strength(0.02))
+        //.force('collide', collide)
+        .force('cluster', clustering)
+        .force('collide', d3.forceCollide(d => d.r + padding).strength(0.5).iterations(1))
+        .on("tick", tick)
+
+    const circles = svg.append('g')
+        .datum(nodes)
+        .selectAll('.circle')
+        .data(d => d)
+        .enter().append('circle')
+        .attr('r', d => d.r)
+        .attr('fill', d => color(d.cluster / 10))
+        .attr("cx", d => d.dx)
+        .attr("cy", d => d.dy)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 0.6)
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
+
+    function dragstarted(d) {
+        if (!d3.event.active) force.alphaTarget(.03).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    }
+
+    function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+
+    function dragended(d) {
+        if (!d3.event.active) force.alphaTarget(.03);
+        d.fx = null;
+        d.fy = null;
+    }
+
+    circles.transition()
+        .duration(1000)
+        .attrTween("r", function (d) {
+            var i = d3.interpolate(0, d.r);
+            return function (t) {
+                return d.r = i(t);
+            };
+        });
+
+    function tick() {
+        circles
+            .attr('cx', d => d.x)
+            .attr('cy', d => d.y);
+    }
+
+    // Move d to be adjacent to the cluster node.
+    function clustering(alpha) {
+        nodes.forEach((d) => {
+            const cluster = clusters[d.cluster];
+            if (cluster === d) return;
+            let x = d.x - cluster.x;
+            let y = d.y - cluster.y;
+            let l = Math.sqrt((x * x) + (y * y));
+            const r = d.r + cluster.r;
+            if (l !== r) {
+                l = ((l - r) / l) * alpha;
+                d.x -= x *= l;
+                d.y -= y *= l;
+                cluster.x += x;
+                cluster.y += y;
+            }
+        });
+    }
+
+    function collide(alpha) {
+        const quadtree = d3.quadtree()
+            .x(d => d.x)
+            .y(d => d.y)
+            .addAll(nodes);
+
+        nodes.forEach((d) => {
+            const r = d.r + maxRadius + Math.max(padding, clusterPadding);
+            const nx1 = d.x - r;
+            const nx2 = d.x + r;
+            const ny1 = d.y - r;
+            const ny2 = d.y + r;
+            quadtree.visit((quad, x1, y1, x2, y2) => {
+                if (quad.data && (quad.data !== d)) {
+                    let x = d.x - quad.data.x;
+                    let y = d.y - quad.data.y;
+                    let l = Math.sqrt((x * x) + (y * y));
+                    const r = d.r + quad.data.r + (d.cluster === quad.data.cluster ? padding : clusterPadding);
+                    if (l < r) {
+                        l = ((l - r) / l) * alpha;
+                        d.x -= x *= l;
+                        d.y -= y *= l;
+                        quad.data.x += x;
+                        quad.data.y += y;
+                    }
+                }
+                return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+            });
+        });
+    }
+
+</script>
+</body>
+</html>

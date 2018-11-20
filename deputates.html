@@ -5,13 +5,14 @@
     <title>List of deputates</title>
 </head>
 <body>
-<div class="column" id="column-1">
-    <div class="ajax"></div>
-</div>
+
+    <div id="ajax"></div>
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 <script>
     var token = "55859e42059cd5ad0a7f148dfc89b68d8f9ba392";
+    token="d46ee3e8d3c69fa9c2e8fbd678e3fc64025260c3"; // for development
 /*
     fetch('http://api.duma.gov.ru/api/' + token + '/deputies.json').then(function (response) {
         return response.json();
@@ -19,16 +20,31 @@
         console.log(json);
     });
 */
+var deps=[];
+
     $.ajax({
         url:  'https://cors-anywhere.herokuapp.com/http://api.duma.gov.ru/api/' + token + '/deputies.json',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-        'X-Requested-With':'XMLHttpRequest'},
-        data: {current:1, position:'Депутат ГД'},
+        'X-Requested-With':'XMLHttpRequest',},
+        data: {current:1, position:'Депутат ГД'/*,begin:'А'*/},
         dataType: "jsonp",
         crossDomain:false,
         success: function(data) {
-            console.log(JSON.stringify(data,null,2));
+            //console.log(JSON.stringify(data,null,2));
+            deps=data.map((d)=>{
+                var birthday;
+                var fraction=d.factions[d.factions.length-1];(!fraction) ? fraction={name:"Error. no Fraction"} : fraction
+
+                return {
+                id_gov: d.id,
+                name_gov: d.name,
+                //fraction_gov:d.factions.map((b)=>{return {fac: b.name}})
+                //fraction_gov: fraction.name
+            }
+            })
+            //console.log(JSON.stringify(deps,null,2));
+            getDepFields()
             // возникла ошибка, выводим код и сообщение об ошибке
             if (data.code) {
                 $(".ajax").remove();
@@ -38,6 +54,67 @@
             }
         }
     });
+
+    function getDepFields() {
+        deps.forEach(function (dep,i,arr) {
+            setTimeout(theend(i), 10000)
+            fields=getFiels(deps[i].id_gov,i,deps.length)
+        })
+
+    }
+    function theend(i) {
+        $("#ajax").append(i+" ")
+    }
+
+    function getFiels(dep_id,i,length) {
+        $.ajax({
+            url:  'https://cors-anywhere.herokuapp.com/http://api.duma.gov.ru/api/' + token + '/deputy.json',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With':'XMLHttpRequest',},
+            data: {id:dep_id},
+            dataType: "jsonp",
+            crossDomain:false,
+            success: function(data) {
+                //if (data) console.log("deputat!"+data.id);
+                //console.log(JSON.stringify(data,null,2));
+                if (data)
+                {
+                    //deps[i].id = data.id// - идентификатор депутата
+                    deps[i].family = data.family//  - фамилия
+                    deps[i].name = data.name//  - имя
+                    deps[i].patronymic = data.patronymic//  - отчество
+                    deps[i].birthdate = data.birthdate//  - дата рождения
+                    deps[i].credentialsStart = data.credentialsStart//  - дата начала полономочий в последнем созыве
+                    deps[i].credentialsEnd = data.credentialsEnd//  - дата окончания полономочий в последнем созыве
+                    deps[i].factionId = data.factionId//  - идентификатор фракции
+                    deps[i].factionName = data.factionName//  - полное название фракции
+                    deps[i].factionRole = data.factionRole//  - роль во фракции (цифры в начале задают сортировку роли внутри фракции)
+                    deps[i].partyNameInstr = data.partyNameInstr//  - название партии в творительном падеже
+                    deps[i].isActual = data.isActual//  - полномочия действуют на настоящий момент
+                    deps[i].factionRegion = data.factionRegion//  - связь фракции с регионом
+                    deps[i].lawcount = data.lawcount//  - число законопроектов, инициатором которых является депутат
+                    deps[i].region = data.region//  - связь депутата с регионами (массив строк)
+                    deps[i].speachCount = data.speachCount//  - число выступлений депутата
+                    deps[i].voteLink = data.voteLink//  - ссылка на голосования депутата
+                    deps[i].transcriptLink = data.transcriptLink//  - ссылка на стенограммы депутата
+                    deps[i].educations = data.educations//  - массив объектов вида, отражающих сведения о высшем образовании:
+                    deps[i].institution = data.institution//  - название ВУЗа
+                    deps[i].activity = data.activity// - массив объектов вида, отражающих сведения о деятельности,
+                }
+                $("#ajax").append(deps[i]);
+                if (i==length-1) {console.log(JSON.stringify(deps,null,2));}
+
+                // возникла ошибка, выводим код и сообщение об ошибке
+                if (data && data.code) {
+                    $(".ajax").remove();
+                    alert("Error #" + data.code + ": " + data.text);
+
+                    return false;
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>

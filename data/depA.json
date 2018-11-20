@@ -1,0 +1,679 @@
+[
+  {
+    "id_gov": "99112936",
+    "name_gov": "Авдеев Александр Александрович",
+    "family": "Авдеев",
+    "name": "Александр",
+    "patronymic": "Александрович",
+    "birthdate": "1975-08-12",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": null,
+    "isActual": "true",
+    "factionRegion": null,
+    "lawcount": 5,
+    "speachCount": 13,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99112936&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%C2%C4%C5%C5%C2+%C0.%C0.%22",
+    "educations": [
+      {
+        "institution": "Московский государственный технический университет имени H.Э.Баумана",
+        "year": "1998"
+      },
+      {
+        "institution": "Московский государственный технический университет имени H.Э.Баумана",
+        "year": "1999"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 6739300,
+        "subdivisionNameGenitive": "Комитета ГД по контролю и Регламенту"
+      },
+      {
+        "name": "Член комитета",
+        "subdivisionId": 6275300,
+        "subdivisionNameGenitive": "Комитета ГД по контролю и Регламенту"
+      },
+      {
+        "name": "Член комитета",
+        "subdivisionId": 12334800,
+        "subdivisionNameGenitive": "Комитета ГД по контролю и Регламенту"
+      }
+    ]
+  },
+  {
+    "id_gov": "99111987",
+    "name_gov": "Агаев Ваха Абуевич",
+    "family": "Агаев",
+    "name": "Ваха",
+    "patronymic": "Абуевич",
+    "birthdate": "1953-03-15",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100004",
+    "factionName": "Фракция Политической партии \"КОММУНИСТИЧЕСКАЯ ПАРТИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": "Политической партией \"Коммунистическая партия Российской Федерации\"",
+    "isActual": "true",
+    "factionRegion": "(Общефедеральная часть федерального списка кандидатов).",
+    "lawcount": 32,
+    "speachCount": 1,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99111987&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%C3%C0%C5%C2+%C2.%C0.%22",
+    "educations": [
+      {
+        "institution": "Чечено-Ингушский государственный университет имени Л.Н.Толстого",
+        "year": "1977"
+      },
+      {
+        "institution": "Московский кооперативный институт",
+        "year": "1985"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Заместитель председателя комитета",
+        "subdivisionId": 9706100,
+        "subdivisionNameGenitive": "Комитета ГД по финансовому рынку"
+      }
+    ]
+  },
+  {
+    "id_gov": "99112712",
+    "name_gov": "Адучиев Батор Канурович",
+    "family": "Адучиев",
+    "name": "Батор",
+    "patronymic": "Канурович",
+    "birthdate": "1963-01-27",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": "Всероссийской политической партией \"ЕДИНАЯ РОССИЯ\"",
+    "isActual": "true",
+    "factionRegion": "(Республика Калмыкия, Ставропольский край, Астраханская область, Ростовская область)",
+    "lawcount": 8,
+    "speachCount": 1,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99112712&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%C4%D3%D7%C8%C5%C2+%C1.%CA.%22",
+    "educations": [
+      {
+        "institution": "Московский институт коммунального хозяйства и строительства",
+        "year": "1992"
+      },
+      {
+        "institution": "Санкт-Петербургский университет МВД России",
+        "year": "2005"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 6274200,
+        "subdivisionNameGenitive": "Комитета ГД по аграрным вопросам"
+      }
+    ]
+  },
+  {
+    "id_gov": "99109653",
+    "name_gov": "Азимов Рахим Азизбоевич",
+    "family": "Азимов",
+    "name": "Рахим",
+    "patronymic": "Азизбоевич",
+    "birthdate": "1964-08-16",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": null,
+    "isActual": "true",
+    "factionRegion": null,
+    "lawcount": 87,
+    "speachCount": 0,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99109653&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%C7%C8%CC%CE%C2+%D0.%C0.%22",
+    "educations": [
+      {
+        "institution": "Ленинградский горный институт имени Г.В.Плеханова",
+        "year": "1986"
+      },
+      {
+        "institution": "Дипломатическая академия МИД России",
+        "year": "2002"
+      },
+      {
+        "institution": "Санкт-Петербургский университет МВД России",
+        "year": "2011"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 10942300,
+        "subdivisionNameGenitive": "Комитета ГД по безопасности и противодействию коррупции"
+      }
+    ]
+  },
+  {
+    "id_gov": "99100784",
+    "name_gov": "Аксаков Анатолий Геннадьевич",
+    "family": "Аксаков",
+    "name": "Анатолий",
+    "patronymic": "Геннадьевич",
+    "birthdate": "1957-11-28",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100027",
+    "factionName": "Фракция Политической партии СПРАВЕДЛИВАЯ РОССИЯ",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": null,
+    "isActual": "true",
+    "factionRegion": null,
+    "lawcount": 340,
+    "speachCount": 686,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99100784&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%CA%D1%C0%CA%CE%C2+%C0.%C3.%22",
+    "educations": [
+      {
+        "institution": "Московский государственный университет имени М.В.Ломоносова",
+        "year": "1983"
+      },
+      {
+        "institution": "Дипломатическая академия МИД России",
+        "year": "2005"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Председатель комитета",
+        "subdivisionId": 9706100,
+        "subdivisionNameGenitive": "Комитета ГД по финансовому рынку"
+      }
+    ]
+  },
+  {
+    "id_gov": "99111778",
+    "name_gov": "Алексеева Татьяна Олеговна",
+    "family": "Алексеева",
+    "name": "Татьяна",
+    "patronymic": "Олеговна",
+    "birthdate": "1962-12-16",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": null,
+    "isActual": "true",
+    "factionRegion": null,
+    "lawcount": 77,
+    "speachCount": 27,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99111778&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%CB%C5%CA%D1%C5%C5%C2%C0+%D2.%CE.%22",
+    "educations": [
+      {
+        "institution": "Кемеровский государственный университет",
+        "year": "1985"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 6274700,
+        "subdivisionNameGenitive": "Комитета ГД по международным делам"
+      }
+    ]
+  },
+  {
+    "id_gov": "99100472",
+    "name_gov": "Алимова Ольга Николаевна"
+  },
+  {
+    "id_gov": "99100543",
+    "name_gov": "Алферов Жорес Иванович",
+    "family": "Алферов",
+    "name": "Жорес",
+    "patronymic": "Иванович",
+    "birthdate": "1930-03-15",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100004",
+    "factionName": "Фракция Политической партии \"КОММУНИСТИЧЕСКАЯ ПАРТИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": "Политической партией \"Коммунистическая партия Российской Федерации\"",
+    "isActual": "true",
+    "factionRegion": "(Общефедеральная часть федерального списка кандидатов).",
+    "lawcount": 54,
+    "speachCount": 35,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99100543&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%CB%D4%C5%D0%CE%C2+%C6.%C8.%22",
+    "educations": [
+      {
+        "institution": "Ленинградский электротехнический институт имени В.И.Ульянова (Ленина)",
+        "year": "1952"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 6274800,
+        "subdivisionNameGenitive": "Комитета ГД по делам Содружества Независимых Государств, евразийской интеграции и связям с соотечественниками"
+      },
+      {
+        "name": "Член комитета",
+        "subdivisionId": 11527600,
+        "subdivisionNameGenitive": "Комитета ГД по делам Содружества Независимых Государств, евразийской интеграции и связям с соотечественниками"
+      }
+    ]
+  },
+  {
+    "id_gov": "99112719",
+    "name_gov": "Альшевских Андрей Геннадьевич",
+    "family": "Альшевских",
+    "name": "Андрей",
+    "patronymic": "Геннадьевич",
+    "birthdate": "1972-05-14",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": null,
+    "isActual": "true",
+    "factionRegion": null,
+    "lawcount": 5,
+    "speachCount": 302,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99112719&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%CB%DC%D8%C5%C2%D1%CA%C8%D5+%C0.%C3.%22",
+    "educations": [
+      {
+        "institution": "Академия труда и социальных отношений",
+        "year": "2005"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 6739300,
+        "subdivisionNameGenitive": "Комитета ГД по контролю и Регламенту"
+      },
+      {
+        "name": "Член комитета",
+        "subdivisionId": 6275300,
+        "subdivisionNameGenitive": "Комитета ГД по контролю и Регламенту"
+      },
+      {
+        "name": "Член комитета",
+        "subdivisionId": 12334800,
+        "subdivisionNameGenitive": "Комитета ГД по контролю и Регламенту"
+      }
+    ]
+  },
+  {
+    "id_gov": "99111780",
+    "name_gov": "Ананских Игорь Александрович",
+    "family": "Ананских",
+    "name": "Игорь",
+    "patronymic": "Александрович",
+    "birthdate": "1966-09-06",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100027",
+    "factionName": "Фракция Политической партии СПРАВЕДЛИВАЯ РОССИЯ",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": "Политической партией СПРАВЕДЛИВАЯ РОССИЯ",
+    "isActual": "true",
+    "factionRegion": "(Республика Карелия, Ленинградская область, Мурманская область)",
+    "lawcount": 72,
+    "speachCount": 54,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99111780&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%CD%C0%CD%D1%CA%C8%D5+%C8.%C0.%22",
+    "educations": [
+      {
+        "institution": "Ленинградское высшее инженерное морское училище имени адмирала C.О.Макарова",
+        "year": "1988"
+      },
+      {
+        "institution": "Санкт-Петербургский университет Государственной противопожарной службы МЧС России",
+        "year": "2012"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Первый заместитель председателя комитета",
+        "subdivisionId": 9707100,
+        "subdivisionNameGenitive": "Комитета ГД по энергетике"
+      }
+    ]
+  },
+  {
+    "id_gov": "99113072",
+    "name_gov": "Андрейченко Андрей Валерьевич"
+  },
+  {
+    "id_gov": "99110909",
+    "name_gov": "Аникеев Григорий Викторович",
+    "family": "Аникеев",
+    "name": "Григорий",
+    "patronymic": "Викторович",
+    "birthdate": "1972-02-28",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": null,
+    "isActual": "true",
+    "factionRegion": null,
+    "lawcount": 16,
+    "speachCount": 1,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99110909&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%CD%C8%CA%C5%C5%C2+%C3.%C2.%22",
+    "educations": [
+      {
+        "institution": "Владимирский государственный технический университет",
+        "year": "1994"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 6275200,
+        "subdivisionNameGenitive": "Комитета ГД по развитию гражданского общества, вопросам общественных и религиозных объединений"
+      },
+      {
+        "name": "Член комитета",
+        "subdivisionId": 12251600,
+        "subdivisionNameGenitive": "Комитета ГД по развитию гражданского общества, вопросам общественных и религиозных объединений"
+      }
+    ]
+  },
+  {
+    "id_gov": "99112513",
+    "name_gov": "Антонова Лидия Николаевна",
+    "family": "Антонова",
+    "name": "Лидия",
+    "patronymic": "Николаевна",
+    "birthdate": "1950-05-15",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": null,
+    "isActual": "true",
+    "factionRegion": null,
+    "lawcount": 5,
+    "speachCount": 3,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99112513&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%CD%D2%CE%CD%CE%C2%C0+%CB.%CD.%22",
+    "educations": [
+      {
+        "institution": "Московский областной  педагогический институт имени Н.К.Крупской",
+        "year": "1973"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 12195200,
+        "subdivisionNameGenitive": "Комитета ГД по образованию и науке"
+      }
+    ]
+  },
+  {
+    "id_gov": "99112511",
+    "name_gov": "Антошкин Николай Тимофеевич",
+    "family": "Антошкин",
+    "name": "Николай",
+    "patronymic": "Тимофеевич",
+    "birthdate": "1942-12-19",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": "Всероссийской политической партией \"ЕДИНАЯ РОССИЯ\"",
+    "isActual": "true",
+    "factionRegion": "(город Москва)",
+    "lawcount": 36,
+    "speachCount": 6,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99112511&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%CD%D2%CE%D8%CA%C8%CD+%CD.%D2.%22",
+    "educations": [
+      {
+        "institution": "Оренбургское высшее военное авиационное училище летчиков",
+        "year": "1965"
+      },
+      {
+        "institution": "Военно-воздушная академия имени Ю.А.Гагарина",
+        "year": "1973"
+      },
+      {
+        "institution": "Военная академия Генерального штаба Вооруженных Cил СССР  имени К.Е.Ворошилова",
+        "year": "1983"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 12194800,
+        "subdivisionNameGenitive": "Комитета ГД по природным ресурсам, собственности и земельным отношениям"
+      }
+    ]
+  },
+  {
+    "id_gov": "99100640",
+    "name_gov": "Арефьев Николай Васильевич",
+    "family": "Арефьев",
+    "name": "Николай",
+    "patronymic": "Васильевич",
+    "birthdate": "1949-03-11",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100004",
+    "factionName": "Фракция Политической партии \"КОММУНИСТИЧЕСКАЯ ПАРТИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": "Политической партией \"Коммунистическая партия Российской Федерации\"",
+    "isActual": "true",
+    "factionRegion": "(Республика Калмыкия, Астраханская область, Волгоградская область)",
+    "lawcount": 150,
+    "speachCount": 374,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99100640&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%D0%C5%D4%DC%C5%C2+%CD.%C2.%22",
+    "educations": [
+      {
+        "institution": "Астраханский технический институт рыбной промышленности и хозяйства",
+        "year": "1979"
+      },
+      {
+        "institution": "Саратовская высшая партийная школа",
+        "year": "1990"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Первый заместитель председателя комитета",
+        "subdivisionId": 12194400,
+        "subdivisionNameGenitive": "Комитета ГД по экономической политике, промышленности, инновационному развитию и предпринимательству"
+      }
+    ]
+  },
+  {
+    "id_gov": "99109998",
+    "name_gov": "Аршба Отари Ионович",
+    "family": "Аршба",
+    "name": "Отари",
+    "patronymic": "Ионович",
+    "birthdate": "1955-04-12",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": "Всероссийской политической партией \"ЕДИНАЯ РОССИЯ\"",
+    "isActual": "true",
+    "factionRegion": "(Московская область)",
+    "lawcount": 27,
+    "speachCount": 176,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99109998&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%D0%D8%C1%C0+%CE.%C8.%22",
+    "educations": [
+      {
+        "institution": "Высшая школа КГБ при Совете Министров СССР имени Ф.Э.Дзержинского",
+        "year": "1978"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 12194200,
+        "subdivisionNameGenitive": "Комитета ГД по государственному строительству и законодательству"
+      },
+      {
+        "name": "Председатель комиссии",
+        "subdivisionId": null,
+        "subdivisionNameGenitive": "Комиссии ГД  по вопросам контроля за достоверностью сведений о доходах, об имуществе и обязательствах имущественного характера, представляемых депутатами Государственной Думы, мандатным вопросам и вопросам депутатской этики"
+      }
+    ]
+  },
+  {
+    "id_gov": "99112121",
+    "name_gov": "Аршинова Алёна Игоревна",
+    "family": "Аршинова",
+    "name": "Алёна",
+    "patronymic": "Игоревна",
+    "birthdate": "1985-03-03",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": "Всероссийской политической партией \"ЕДИНАЯ РОССИЯ\"",
+    "isActual": "true",
+    "factionRegion": "(Республика Марий Эл, Республика Мордовия, Чувашская Республика – Чувашия, Нижегородская область)",
+    "lawcount": 74,
+    "speachCount": 65,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99112121&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%D0%D8%C8%CD%CE%C2%C0+%C0.%C8.%22",
+    "educations": [
+      {
+        "institution": "Приднестровский государственный университет имени Т.Г.Шевченко",
+        "year": "2007"
+      },
+      {
+        "institution": "Аспирантура Московского государственного университета имени М.В.Ломоносова",
+        "year": "2010"
+      },
+      {
+        "institution": "Дипломатическая академия Министерства иностранных дел Российской Федерации",
+        "year": "2014"
+      },
+      {
+        "institution": "Российский экономический университет имени Г.В.Плеханова",
+        "year": "2015"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 12195200,
+        "subdivisionNameGenitive": "Комитета ГД по образованию и науке"
+      },
+      {
+        "name": "Член комиссии",
+        "subdivisionId": null,
+        "subdivisionNameGenitive": "Счетной комиссии ГД"
+      }
+    ]
+  },
+  {
+    "id_gov": "99112120",
+    "name_gov": "Аскендеров Заур Асевович"
+  },
+  {
+    "id_gov": "99110911",
+    "name_gov": "Афонин Юрий Вячеславович",
+    "family": "Афонин",
+    "name": "Юрий",
+    "patronymic": "Вячеславович",
+    "birthdate": "1977-03-22",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100004",
+    "factionName": "Фракция Политической партии \"КОММУНИСТИЧЕСКАЯ ПАРТИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": "Политической партией \"Коммунистическая партия Российской Федерации\"",
+    "isActual": "true",
+    "factionRegion": "(Общефедеральная часть федерального списка кандидатов).",
+    "lawcount": 65,
+    "speachCount": 27,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99110911&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%D4%CE%CD%C8%CD+%DE.%C2.%22",
+    "educations": [
+      {
+        "institution": "Тульский государственный педагогический университет имени Л.Н.Толстого",
+        "year": "1999"
+      },
+      {
+        "institution": "Российская академия государственной службы при Президенте Российской Федерации",
+        "year": "2006"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Первый заместитель председателя комитета",
+        "subdivisionId": 12194800,
+        "subdivisionNameGenitive": "Комитета ГД по природным ресурсам, собственности и земельным отношениям"
+      }
+    ]
+  },
+  {
+    "id_gov": "99112021",
+    "name_gov": "Афонский Владимир Игорьевич",
+    "family": "Афонский",
+    "name": "Владимир",
+    "patronymic": "Игорьевич",
+    "birthdate": "1966-10-10",
+    "credentialsStart": "2016-09-18",
+    "credentialsEnd": null,
+    "factionId": "72100024",
+    "factionName": "Фракция Всероссийской политической партии \"ЕДИНАЯ РОССИЯ\"",
+    "factionRole": " 00023 Член фракции",
+    "partyNameInstr": null,
+    "isActual": "true",
+    "factionRegion": null,
+    "lawcount": 143,
+    "speachCount": 166,
+    "voteLink": "http://vote.duma.gov.ru/?convocation=AAAAAAA7&deputy=99112021&sort=date_desc",
+    "transcriptLink": "http://www.cir.ru/duma/servlet/is4.wwwmain?FormName=ProcessQuery&Action=RunQuery&PDCList=*&QueryString=%2FGD_%C4%C5%CF%D3%D2%C0%D2%3D%22%C0%D4%CE%CD%D1%CA%C8%C9+%C2.%C8.%22",
+    "educations": [
+      {
+        "institution": "Тульский государственный педагогический институт имени Л.Н.Толстого",
+        "year": "1989"
+      },
+      {
+        "institution": "Всероссийский заочный финансово-экономический институт",
+        "year": "2006"
+      },
+      {
+        "institution": "Российская академия государственной службы при Президенте Российской Федерации",
+        "year": "2010"
+      }
+    ],
+    "activity": [
+      {
+        "name": "Член комитета",
+        "subdivisionId": 12194600,
+        "subdivisionNameGenitive": "Комитета ГД по транспорту и строительству"
+      }
+    ]
+  }
+]
