@@ -15,7 +15,7 @@
     var myGroups = new Set();
     var myArrGroups = new Array()
 
-    d3.json("/data/deputates.json").then(function (rawdata) {
+    d3.json("data/deputates.json").then(function (rawdata) {
         data = rawdata.results.flatMap((d) => {
             groups=d.groups
             return groups.map((b) => {
@@ -41,7 +41,7 @@
     });
 
     function getLobby(){
-        d3.json("/data/lobby_group.json").then(function (rawdata) {
+        d3.json("data/lobby_group.json").then(function (rawdata) {
             lobby = rawdata.results.map((d) => {
                 return {
                     id: d.id,
