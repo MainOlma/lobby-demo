@@ -237,12 +237,12 @@
             // change outline to indicate hover state.
             d3.select(this).attr('stroke', 'black');
 
-            circles.filter(e=>e.id===d.id).attr('fill', 'red');
+            circles.filter(e=>e.id===d.id).transition().attr('fill', 'red');
 
             var groupname=lobby.find(x => x.id === d.cluster)
 
 
-            circles.filter(e=>e.id!=d.id).attr('fill', "gray");
+            circles.filter(e=>e.id!=d.id).transition().attr('fill', "gray");
 
             var content = '<span class="name">ФИО: </span><span class="value">' +
                 d.name +
@@ -262,7 +262,7 @@
      */
         function hideDetail(d) {
             // reset outline
-            circles.attr('fill', d=>d.color);
+            circles.transition().attr('fill', d=>d.color);
             d3.select(this)
                 .attr('stroke', d3.rgb(color(d.cluster / 10)).darker());
 
