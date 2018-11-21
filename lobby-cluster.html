@@ -6,7 +6,6 @@
 </head>
 <body>
 <script src="//d3js.org/d3.v5.min.js"></script>
-<script src="src/grid.js"></script>
 
 <script src="src/tooltip.js"></script>
 <script>
@@ -69,14 +68,6 @@
 
 
     function doSomething() {
-        var  arr=[]
-        var grid = d3.grid()
-            .points()
-            .nodeSize([100, 100])
-            .padding([20, 20]);
-
-        console.log("pointGrid", grid)
-
 
         var width = 1200,
             height = 1000,
