@@ -69,8 +69,8 @@
 
     function doSomething() {
 
-        var width = 1200,
-            height = 1000,
+        var width = 1500,
+            height = 2000,
             padding = 2, // separation between same-color nodes
             clusterPadding = 20, // separation between different-color nodes
             maxRadius = 4;
@@ -145,7 +145,7 @@
         var nodes2 = nodes.concat(clearClusters);
         //console.log("nodes2", nodes2)
 
-        var columns=10,
+        var columns=15,
             rows=clearClusters.length/columns
 
         var xScale = d3.scaleLinear()
