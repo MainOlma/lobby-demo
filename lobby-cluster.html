@@ -6,6 +6,7 @@
 </head>
 <body>
 <script src="//d3js.org/d3.v5.min.js"></script>
+
 <script src="src/tooltip.js"></script>
 <script>
     // tooltip for mouseover functionality
@@ -14,43 +15,53 @@
     var lobby=[];
     var myGroups = new Set();
     var myArrGroups = new Array()
+    var files = ["data/deputates.json", "data/lobby_group.json"];
+    var promises = [];
 
-    d3.json("data/deputates.json").then(function (rawdata) {
+    files.forEach(function (url) {
+        promises.push(d3.json(url))
+    });
+
+    Promise.all(promises).then(function (values) {
+        console.log("file1", values[0])
+        console.log("files2", values[1])
+        rawDep = values[0]
+        rawLobby = values[1]
+        dataDepMap(rawDep)
+        getLobbyMap(rawLobby);
+        doSomething()
+    });
+
+
+    function dataDepMap(rawdata) {
         data = rawdata.results.flatMap((d) => {
-            groups=d.groups
+            groups = d.groups
             return groups.map((b) => {
                 myGroups.add(b)
+                /*set provide unique values of lobby groups*/
                 return {
                     id: d.id,
                     name: d.fullname,
-                    group:b
+                    group: b
                 }
             })
         });
-        //data.push({id:0,parent:"",name:"lobby"});//add root node
-
-        var i=0
-        myGroups.forEach(function(value) {
-            myArrGroups.push({id:i++,val:value});
+        var i = 0
+        myGroups.forEach(function (value) {
+            myArrGroups.push({id: i++, val: value});
+            /*set to array*/
         });
-        getLobby()
-        doSomething()
-        console.log(data, data.length)
-        console.log(myArrGroups,myArrGroups.length)
+        //console.log(data, data.length)
+    }
 
-    });
-
-    function getLobby(){
-        d3.json("data/lobby_group.json").then(function (rawdata) {
-            lobby = rawdata.results.map((d) => {
-                return {
-                    id: d.id,
-                    name: d.name,
-                }
-            })
-            console.log("lobby", lobby)
-        });
-
+    function getLobbyMap(rawdata) {
+        lobby = rawdata.results.map((d) => {
+            return {
+                id: d.id,
+                name: d.name,
+            }
+        })
+        //console.log("lobby", lobby)
     }
 
 
@@ -79,12 +90,15 @@
         //var nodes = d3.range(n).map(function () {
         var nodes = data.map(function (d) {
             //var i = Math.floor(Math.random() * m),
-            var i = d.group,
+
+            var i = +d.group,
+                groupname=lobby.find(x => x.id === d.group);
                 r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius,
                 d = {
                     name: d.name,
                     id: d.id,
-                    cluster: i,
+                    cluster: +i,
+                    clusterName: groupname.name,
                     color:color(i / 100),
                     r: r,
                     x: Math.cos(i / m * 2 * Math.PI) * 200 + width / 2 + Math.random(),
@@ -94,6 +108,7 @@
             //console.log(d)
             return d;
         });
+        console.log(nodes)
         const margin = {top: 100, right: 100, bottom: 100, left: 100};
 
         // total number of nodes
@@ -107,8 +122,8 @@
         if (!clusters[clusterID] || (radius > clusters[clusterID].r)) {
             clusters[clusterID] = node;
         }
-    });
-    console.log('clusters', clusters);*/
+    });*/
+    //console.log('clusters', JSON.stringify(clusters));
 
         const svg = d3.select('body')
             .append('svg')
@@ -117,8 +132,13 @@
             .append('g')
         //.attr('transform', `translate(${width / 2},${height / 2})`);
 
+        var clearClusters=clusters.filter(function(el) { return el; })
+        console.log(nodes.length,clearClusters.length)
+        var nodes2 = nodes.concat(clearClusters);
+        console.log("nodes2", nodes2)
+
         var force = d3.forceSimulation()
-            .nodes(nodes)
+            .nodes(nodes2)
             .force('center', d3.forceCenter(width / 2, height / 2))
             .force("gravity", d3.forceManyBody(-1))
             .force("x", d3.forceX().strength(0.2))
@@ -141,6 +161,26 @@
             .attr('stroke-width', 0.6)
             .on('mouseover', showDetail)
             .on('mouseout', hideDetail)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        const labels = svg.append('g')
+            .datum(clearClusters)
+            .selectAll('.circle')
+            .data(d => d)
+            .enter().append('text')
+            //.attr('r', d => d.r)
+            .attr('fill', d => d3.rgb(d.color).darker())
+            .attr("x", d => d.x)
+            .attr("y", d => d.y)
+            .attr("text-anchor","middle")
+            .text(d=>d.clusterName)
+            //.attr('stroke', 'black')
+            //.attr('stroke-width', 0.6)
+            .on('mouseover', overLabel)
+            .on('mouseout', outLabel)
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
@@ -172,10 +212,22 @@
                 };
             });
 
+        labels.transition()
+            .duration(1000)
+            .attrTween("r", function (d) {
+                var i = d3.interpolate(0, d.r);
+                return function (t) {
+                    return d.r = i(t);
+                };
+            });
+
         function tick() {
             circles
                 .attr('cx', d => d.x)
                 .attr('cy', d => d.y);
+            labels
+                .attr('x', d => d.x)
+                .attr('y', d => d.y);
         }
 
         // Move d to be adjacent to the cluster node.
@@ -235,13 +287,8 @@
    */
         function showDetail(d) {
             // change outline to indicate hover state.
-            d3.select(this).attr('stroke', 'black');
-
-
-
-
+            //d3.select(this).attr('stroke', 'black');
             var groupname=lobby.find(x => x.id === d.cluster)
-
 
             circles.filter(e=>e.id!=d.id).transition().attr('fill', "gray");
             circles.filter(e=>e.cluster===d.cluster).transition().attr('fill', 'blue');
@@ -266,10 +313,16 @@
         function hideDetail(d) {
             // reset outline
             circles.transition().attr('fill', d=>d.color);
-            d3.select(this)
-                .attr('stroke', d3.rgb(color(d.cluster / 10)).darker());
-
+            //d3.select(this).attr('stroke', d3.rgb(color(d.cluster / 10)).darker());
             tooltip.hideTooltip();
+        }
+
+        function overLabel(d) {
+            d3.select(this).attr("fill","red")
+        }
+
+        function outLabel(d) {
+            d3.select(this).attr("fill",d=>d3.rgb(d.color).darker())
         }
 
         /*
