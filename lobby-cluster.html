@@ -6,6 +6,7 @@
 </head>
 <body>
 <script src="//d3js.org/d3.v5.min.js"></script>
+<script src="src/grid.js"></script>
 
 <script src="src/tooltip.js"></script>
 <script>
@@ -68,12 +69,19 @@
 
 
     function doSomething() {
+        var  arr=[]
+        var grid = d3.grid()
+            .points()
+            .nodeSize([100, 100])
+            .padding([20, 20]);
+
+        console.log("pointGrid", grid)
 
 
         var width = 1200,
             height = 1000,
-            padding = 1, // separation between same-color nodes
-            clusterPadding = 10, // separation between different-color nodes
+            padding = 2, // separation between same-color nodes
+            clusterPadding = 20, // separation between different-color nodes
             maxRadius = 4;
 
         var n = 200, // total number of nodes
@@ -86,6 +94,14 @@
             .domain(d3.range(m));
         // The largest node for each cluster
         var clusters = new Array(m);
+
+        for (var i = 0; i < m; i++) {
+
+            //clusters[i]={count:0};
+
+            // ещё какие-то выражения
+        }
+        console.log(clusters)
 
         //var nodes = d3.range(n).map(function () {
         var nodes = data.map(function (d) {
@@ -101,14 +117,15 @@
                     clusterName: groupname.name,
                     color:color(i / 100),
                     r: r,
-                    x: Math.cos(i / m * 2 * Math.PI) * 200 + width / 2 + Math.random(),
-                    y: Math.sin(i / m * 2 * Math.PI) * 200 + height / 2 + Math.random()
+                    x: Math.cos(i / m * 2 * Math.PI) * 300 + width / 2 + Math.random(),
+                    y: Math.sin(i / m * 2 * Math.PI) * 300 + height / 2 + Math.random()
+
                 };
-            if (!clusters[i] || (r > clusters[i].r)) clusters[i] = d;
+            if (!clusters[i] || (r > clusters[i].r)) {clusters[i] = d; clusters[i].count=clusters[i].count+1};
             //console.log(d)
             return d;
         });
-        console.log(nodes)
+        //console.log(nodes)
         const margin = {top: 100, right: 100, bottom: 100, left: 100};
 
         // total number of nodes
@@ -133,19 +150,62 @@
         //.attr('transform', `translate(${width / 2},${height / 2})`);
 
         var clearClusters=clusters.filter(function(el) { return el; })
-        console.log(nodes.length,clearClusters.length)
+        console.log(clearClusters)
         var nodes2 = nodes.concat(clearClusters);
-        console.log("nodes2", nodes2)
+        //console.log("nodes2", nodes2)
+
+        var columns=10,
+            rows=clearClusters.length/columns
+
+        var xScale = d3.scaleLinear()
+            .domain([0, columns-1])
+            .range([100, width-200]);
+
+        var yScale = d3.scaleLinear()
+            .domain([0, rows-1])
+            .range([100, height-100]);
+
+        var pointScale = d3.scalePoint()
+            .domain(clearClusters)
+            .range([200, 600]);
+
+
+
+
+        function foci(cluster){
+            var groupname=lobby.find(x => x.id === cluster);
+
+            var position = lobby.indexOf(groupname)
+
+            var clusterNumber=groupname.id
+
+            var col_pos=(position+1)%columns
+
+             var row_pos=Math.floor(position/columns)
+
+
+            return {
+                "x" : xScale(col_pos),
+                "y": yScale(row_pos)
+            }
+        };
+
+        var forceX = d3.forceX((d) => foci(d.cluster).x);
+        var forceY = d3.forceY((d) => foci(d.cluster).y);
 
         var force = d3.forceSimulation()
             .nodes(nodes2)
-            .force('center', d3.forceCenter(width / 2, height / 2))
-            .force("gravity", d3.forceManyBody(-1))
-            .force("x", d3.forceX().strength(0.2))
-            .force("y", d3.forceY().strength(0.2))
+            //.force('center', d3.forceCenter(width / 2, height / 2))
+            //.force("gravity", d3.forceManyBody(-1))
+            //.force("x", d3.forceX().strength(0.2))
+            //.force("y", d3.forceY().strength(0.2))
             //.force('collide', collide)
             .force('cluster', clustering)
-            .force('collide', d3.forceCollide(d => d.r + padding).strength(0.2).iterations(1))
+
+            .force('x',forceX)
+            .force('y',forceY)
+
+            .force('collide1', d3.forceCollide(d => d.r + padding).strength(0.1).iterations(1))
             .on("tick", tick)
 
         const circles = svg.append('g')
