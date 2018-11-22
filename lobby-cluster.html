@@ -91,14 +91,15 @@
         var nodes = data.map(function (d) {
 
             var i = +d.group,
-                groupname=lobby.find(x => x.id === d.group),
+                group=lobby.find(x => x.id === d.group),
                 r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius,
                 d = {
                     name: d.name,
                     id: d.id,
                     cluster: +i,
-                    clusterName: groupname.name,
-                    color:color(i / 100),
+                    clusterName: group.name,
+                    clusterParent: group.parent,
+                    color:color(group.parent / 10),
                     r: 10,
                     x: Math.cos(i / m * 2 * Math.PI) * 300 + width / 2 + Math.random(),
                     y: Math.sin(i / m * 2 * Math.PI) * 300 + height / 2 + Math.random()
@@ -109,10 +110,11 @@
             if (!clusters[i] || (r > clusters[i].r)) {
                 clusters[i] = d;
             };
-            clusters[i].count=count
+            clusters[i].count=count//write count of nodes of current cluster
             return d;
         });
-        nodes.sort((a,b)=>d3.ascending(a.count,b.count))
+        //nodes.sort((a,b)=>d3.ascending(a.count,b.count))
+        //nodes.sort((a,b)=>d3.ascending(a.count,b.count))
         console.log(nodes)
 
         const margin = {top: 100, right: 100, bottom: 100, left: 100};
@@ -125,6 +127,7 @@
 
         var clearClusters=clusters.filter(function(el) { return el; })//remove null from array
         clearClusters.sort(function(a, b) { return b.count - a.count; })
+        clearClusters.sort(function(a, b) { return a.clusterParent - b.clusterParent; })
         var nodes2 = nodes.concat(clearClusters);//merge nodes and clusters signs
 
 
@@ -147,18 +150,14 @@
 
 
         function foci(clusterId){
-
             /*var groupname=lobby.find(x => x.id === cluster);
             var position = lobby.indexOf(groupname)
             var clusterNumber=groupname.id*/
 
             cluster=clearClusters.find(x=>x.cluster==clusterId)
             var position =clearClusters.indexOf(cluster)
-            console.log(position,cluster)
-
             var col_pos=(position)%columns
             var row_pos=Math.floor(position/columns)
-
 
             return {
                 "x" : xScale(col_pos),
@@ -177,11 +176,9 @@
             //.force("y", d3.forceY().strength(0.2))
             //.force('collide', collide)
             //.force('cluster', clustering)
-
             .force('x',forceX.strength(1))
             .force('y',forceY.strength(1))
-
-            .force('collide1', d3.forceCollide(d => d.r + padding).strength(0.3).iterations(1))
+            .force('collide', d3.forceCollide(d => d.r + padding).strength(0.3).iterations(1))
             .on("tick", tick)
 
         const circles = svg.append('g')
@@ -335,6 +332,11 @@
                 '</span><br/>' +
                 '<span class="name">Group: </span><span class="value">' +
                 d.cluster + ' '+groupname.name+
+
+                '</span><br/>' +
+                '<span class="name">ParentID: </span><span class="value">' +
+                d.clusterParent +
+
                 '</span><br/>' +
                 '<span class="name">ID: </span><span class="value">' +
                 d.id +
