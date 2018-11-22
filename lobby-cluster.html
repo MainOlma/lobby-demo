@@ -5,10 +5,35 @@
     <link rel="stylesheet" href="css/bubble_chart.css">
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="//d3js.org/d3.v5.min.js"></script>
 
 <script src="src/tooltip.js"></script>
 <script>
+var allData=[]
+var cors="https://cors-anywhere.herokuapp.com/"
+var url_lobby="https://dev.declarator.org/api/lobby_group/"
+
+
+    function getAPI(allData, startFrom,url) {
+        return fetch(startFrom ? cors+startFrom : cors+url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With':'XMLHttpRequest'
+            },
+        }).then(response => response.json())
+            .then(data => {
+            console.log("data.next",data.results)
+                allData=allData.concat(data.results);
+            const nextPage = data.next;
+            if (!nextPage)
+                return allData;
+            else
+                return getAPI(allData, nextPage,url);
+        });
+    }
+
+
     // tooltip for mouseover functionality
     var tooltip = floatingTooltip('gates_tooltip', 240);
     var data=[];
@@ -21,12 +46,14 @@
     files.forEach(function (url) {
         promises.push(d3.json(url))
     });
+    promises.push(getAPI(allData,null,url_lobby));
 
     Promise.all(promises).then(function (values) {
         console.log("file1", values[0])
         console.log("files2", values[1])
+        console.log("url", JSON.stringify(values[2]))
         rawDep = values[0]
-        rawLobby = values[1]
+        rawLobby = values[2]
         dataDepMap(rawDep)
         getLobbyMap(rawLobby);
         doSomething()
@@ -56,7 +83,7 @@
 
     function getLobbyMap(rawdata) {
 
-        lobby = rawdata.results.map((d,i) => {
+        lobby = rawdata.map((d,i) => {
             return {
                 index:i,
                 id: d.id,
@@ -113,8 +140,8 @@
             clusters[i].count=count//write count of nodes of current cluster
             return d;
         });
-        //nodes.sort((a,b)=>d3.ascending(a.count,b.count))
-        //nodes.sort((a,b)=>d3.ascending(a.count,b.count))
+        nodes.sort(function(a, b) { return b.count - a.count; })
+        nodes.sort(function(a, b) { return a.clusterParent - b.clusterParent; })
         console.log(nodes)
 
         const margin = {top: 100, right: 100, bottom: 100, left: 100};
@@ -218,6 +245,10 @@
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
+
+        group1692= circles.filter(d=>d.clusterParent==1692).node()
+        $(group1692).wrap("<g></g>").attr("id","myGroup").attr("transform","translate(64,501)")
+
 
         function dragstarted(d) {
             if (!d3.event.active) force.alphaTarget(.03).restart();

@@ -75,6 +75,47 @@ tree = data => {
 width = 932
 
 
+var allData=[]
+var cors="https://cors-anywhere.herokuapp.com/"
+var url_lobby="https://dev.declarator.org/api/lobby_group/"
+var promises = [];
+promises.push(getAPI(allData,null,url_lobby));
+
+Promise.all(promises).then(function (values) {
+    console.log("url", JSON.stringify(values[0]))
+    rawLobby = values[0]
+    data=rawLobby.map((d)=>{
+        return{
+            id:+d.id,
+            //level:+d.level,
+            name:d.name,
+            parent:(d.parent!=null) ? +d.parent : 0,
+        }
+    });
+    data.push({id:0,parent:"",name:"lobby"});//add root node
+
+    chart();
+});
+function getAPI(allData, startFrom,url) {
+    return fetch(startFrom ? cors+startFrom : cors+url, {
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With':'XMLHttpRequest'
+        },
+    }).then(response => response.json())
+        .then(data => {
+            //console.log("data.next",data.results)
+            allData=allData.concat(data.results);
+            const nextPage = data.next;
+            if (!nextPage)
+                return allData;
+            else
+                return getAPI(allData, nextPage);
+        });
+}
+
+
+/*
 d3.json(matrix_path, {'mode': 'no-cors'}).then(function (rawdata) {
     data=rawdata.results.map((d)=>{
         return{
@@ -87,4 +128,4 @@ d3.json(matrix_path, {'mode': 'no-cors'}).then(function (rawdata) {
     data.push({id:0,parent:"",name:"lobby"});//add root node
 
     chart();
-});
+});*/

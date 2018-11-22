@@ -11,10 +11,17 @@
 </head>
 <body>
   <div class="container">
-    <h1>Лобби</h1>
-
+    <h1>Дума Седьмого созыва</h1>
+    <h2 id="total"></h2>
+    <div id="toolbar">
+      <a href="#" id="all" class="button active">Все партии</a>
+      <a href="#" id="year" class="button">По партиям</a>
+      <a href="#" id="bigs" class="button">С большим рейтингом</a>
+      <a href="#" id="smalls" class="button">С маленьким рейтингом</a>
+    </div>
+    <div id="vis"></div>
     <div id="tree"><svg></svg></div>
-
+    <div id="matrix"></div>
 
     <div class="footer">
       <p><a href="">Blog Post</a> | <a href="">Code</a></p>
@@ -23,7 +30,8 @@
 
   <script src="//d3js.org/d3.v5.min.js"></script>
   <script src="src/tooltip.js"></script>
-
+  <script src="src/bubble_chart.js"></script>
+  <script src="src/lobby_matrix.js"></script>
   <script src="src/tree.js"></script>
 
 </body>
