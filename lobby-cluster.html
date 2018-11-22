@@ -55,13 +55,16 @@
     }
 
     function getLobbyMap(rawdata) {
-        lobby = rawdata.results.map((d) => {
+
+        lobby = rawdata.results.map((d,i) => {
             return {
+                index:i,
                 id: d.id,
                 name: d.name,
+                parent:d.parent
             }
         })
-        //console.log("lobby", lobby)
+        console.log("lobby", lobby)
     }
 
 
@@ -71,35 +74,24 @@
 
         var width = 1500,
             height = 2000,
-            padding = 2, // separation between same-color nodes
+            padding = 1, // separation between same-color nodes
             clusterPadding = 20, // separation between different-color nodes
             maxRadius = 4;
 
-        var n = 200, // total number of nodes
-            m = 10; // number of distinct clusters
 
-        n = data.length
-        m = myArrGroups.length
+        var n = data.length, // total number of nodes
+        m = myArrGroups.length// number of distinct clusters
 
-        var color = d3.scaleSequential(d3.interpolateRainbow)
+        var color = d3.scaleSequential(d3.interpolateRainbow) //rainbow nodes
             .domain(d3.range(m));
+
         // The largest node for each cluster
         var clusters = new Array(m);
 
-        for (var i = 0; i < m; i++) {
-
-            //clusters[i]={count:0};
-
-            // ещё какие-то выражения
-        }
-        console.log(clusters)
-
-        //var nodes = d3.range(n).map(function () {
         var nodes = data.map(function (d) {
-            //var i = Math.floor(Math.random() * m),
 
             var i = +d.group,
-                groupname=lobby.find(x => x.id === d.group);
+                groupname=lobby.find(x => x.id === d.group),
                 r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius,
                 d = {
                     name: d.name,
@@ -107,43 +99,34 @@
                     cluster: +i,
                     clusterName: groupname.name,
                     color:color(i / 100),
-                    r: r,
+                    r: 10,
                     x: Math.cos(i / m * 2 * Math.PI) * 300 + width / 2 + Math.random(),
                     y: Math.sin(i / m * 2 * Math.PI) * 300 + height / 2 + Math.random()
 
                 };
-            if (!clusters[i] || (r > clusters[i].r)) {clusters[i] = d; clusters[i].count=clusters[i].count+1};
-            //console.log(d)
+            var count=0;
+            (clusters[i] ) ? count=clusters[i].count+1 : count=1 //counter of nodes in cluster
+            if (!clusters[i] || (r > clusters[i].r)) {
+                clusters[i] = d;
+            };
+            clusters[i].count=count
             return d;
         });
-        //console.log(nodes)
+        nodes.sort((a,b)=>d3.ascending(a.count,b.count))
+        console.log(nodes)
+
         const margin = {top: 100, right: 100, bottom: 100, left: 100};
-
-        // total number of nodes
-        //const n = nodes.length;
-
-        // collect clusters from nodes alternative extended code
-        /*const clusters = {};
-    nodes.forEach((node) => {
-        const radius = node.r;
-        const clusterID = node.cluster;
-        if (!clusters[clusterID] || (radius > clusters[clusterID].r)) {
-            clusters[clusterID] = node;
-        }
-    });*/
-    //console.log('clusters', JSON.stringify(clusters));
 
         const svg = d3.select('body')
             .append('svg')
             .attr('height', height)
             .attr('width', width)
             .append('g')
-        //.attr('transform', `translate(${width / 2},${height / 2})`);
 
-        var clearClusters=clusters.filter(function(el) { return el; })
-        console.log(clearClusters)
-        var nodes2 = nodes.concat(clearClusters);
-        //console.log("nodes2", nodes2)
+        var clearClusters=clusters.filter(function(el) { return el; })//remove null from array
+        clearClusters.sort(function(a, b) { return b.count - a.count; })
+        var nodes2 = nodes.concat(clearClusters);//merge nodes and clusters signs
+
 
         var columns=15,
             rows=clearClusters.length/columns
@@ -163,16 +146,18 @@
 
 
 
-        function foci(cluster){
-            var groupname=lobby.find(x => x.id === cluster);
+        function foci(clusterId){
 
+            /*var groupname=lobby.find(x => x.id === cluster);
             var position = lobby.indexOf(groupname)
+            var clusterNumber=groupname.id*/
 
-            var clusterNumber=groupname.id
+            cluster=clearClusters.find(x=>x.cluster==clusterId)
+            var position =clearClusters.indexOf(cluster)
+            console.log(position,cluster)
 
-            var col_pos=(position+1)%columns
-
-             var row_pos=Math.floor(position/columns)
+            var col_pos=(position)%columns
+            var row_pos=Math.floor(position/columns)
 
 
             return {
@@ -191,12 +176,12 @@
             //.force("x", d3.forceX().strength(0.2))
             //.force("y", d3.forceY().strength(0.2))
             //.force('collide', collide)
-            .force('cluster', clustering)
+            //.force('cluster', clustering)
 
-            .force('x',forceX)
-            .force('y',forceY)
+            .force('x',forceX.strength(1))
+            .force('y',forceY.strength(1))
 
-            .force('collide1', d3.forceCollide(d => d.r + padding).strength(0.1).iterations(1))
+            .force('collide1', d3.forceCollide(d => d.r + padding).strength(0.3).iterations(1))
             .on("tick", tick)
 
         const circles = svg.append('g')
