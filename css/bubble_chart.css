@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Poiret+One');
 a, a:visited, a:active {
   color: #444;
 }
@@ -82,3 +83,6 @@ a, a:visited, a:active {
     vertical-align: middle;
     margin-left: 5px;
 }
+
+svg text{font-family: 'Open Sans', sans-serif; font-size: 12px;}
+svg text.title{ font-family: 'Poiret One', cursive; font-size: 40px;text-transform: capitalize;}

@@ -23,7 +23,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             },
         }).then(response => response.json())
             .then(data => {
-            console.log("data.next",data.results)
+            //console.log("data.next",data.results)
                 allData=allData.concat(data.results);
             const nextPage = data.next;
             if (!nextPage)
@@ -46,14 +46,14 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
     files.forEach(function (url) {
         promises.push(d3.json(url))
     });
-    promises.push(getAPI(allData,null,url_lobby));
+    //promises.push(getAPI(allData,null,url_lobby));
 
     Promise.all(promises).then(function (values) {
-        console.log("file1", values[0])
-        console.log("files2", values[1])
-        console.log("url", JSON.stringify(values[2]))
+        //console.log("file1", values[0]) //dep
+        //console.log("files2", values[1])//lobby
+        //console.log("url", JSON.stringify(values[2]))//lobby from url
         rawDep = values[0]
-        rawLobby = values[2]
+        rawLobby = values[1] //2 to load from url
         dataDepMap(rawDep)
         getLobbyMap(rawLobby);
         doSomething()
@@ -65,7 +65,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             groups = d.groups
             return groups.map((b) => {
                 myGroups.add(b)
-                /*set provide unique values of lobby groups*/
+                /*the set provide unique values of lobby groups*/
                 return {
                     id: d.id,
                     name: d.fullname,
@@ -88,7 +88,8 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 index:i,
                 id: d.id,
                 name: d.name,
-                parent:d.parent
+                parent:d.parent,
+                level:d.level
             }
         })
         console.log("lobby", lobby)
@@ -100,7 +101,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
     function doSomething() {
 
         var width = 1200,
-            height = 3000,
+            height = 5000,
             padding = 1, // separation between same-color nodes
             clusterPadding = 20, // separation between different-color nodes
             maxRadius = 4;
@@ -116,22 +117,25 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         var clusters = new Array(m);
 
         var nodes = data.map(function (d) {
-
+            var group=lobby.find(x => x.id === d.group)
+            if (group.level==0 ) clusterParentId=group.parent
+            if (group.level==1 ) clusterParentId=lobby.find(x=>x.id==group.parent).id
+            if (group.level==2 ) clusterParentId=lobby.find(x=>x.id==lobby.find(x=>x.id==group.parent).parent).id
             var i = +d.group,
-                group=lobby.find(x => x.id === d.group),
                 r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius,
                 d = {
                     name: d.name,
                     id: d.id,
                     cluster: +i,
                     clusterName: group.name,
-                    clusterParent: group.parent,
+                    clusterParent: clusterParentId,
                     color:color(group.parent / 10),
                     r: 10,
                     x: Math.cos(i / m * 2 * Math.PI) * 300 + width / 2 + Math.random(),
                     y: Math.sin(i / m * 2 * Math.PI) * 300 + height / 2 + Math.random()
 
                 };
+
             var count=0;
             (clusters[i] ) ? count=clusters[i].count+1 : count=1 //counter of nodes in cluster
             if (!clusters[i] || (r > clusters[i].r)) {
@@ -142,7 +146,6 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         });
         nodes.sort(function(a, b) { return b.count - a.count; })
         nodes.sort(function(a, b) { return a.clusterParent - b.clusterParent; })
-        console.log(nodes)
 
         const margin = {top: 100, right: 100, bottom: 100, left: 100};
 
@@ -155,40 +158,69 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         var clearClusters=clusters.filter(function(el) { return el; })//remove null from array
         clearClusters.sort(function(a, b) { return b.count - a.count; })
         clearClusters.sort(function(a, b) { return a.clusterParent - b.clusterParent; })
+        console.log("clearClusters",clearClusters)
+
         var nodes2 = nodes.concat(clearClusters);//merge nodes and clusters signs
 
 
-        var columns=8,
-            rows=clearClusters.length/columns
-
+        var columnsTotal=8
         var xScale = d3.scaleLinear()
-            .domain([0, columns-1])
+            .domain([0, columnsTotal-1])
             .range([100, width-200]);
 
         var yScale = d3.scaleLinear()
-            .domain([0, rows-1])
+            .domain([0, 100])
             .range([100, height-100]);
 
-        var pointScale = d3.scalePoint()
-            .domain(clearClusters)
-            .range([200, 600]);
+        clearClusters[0].col=0; clearClusters[0].row=0
+        clearClusters.forEach(function (el,i,arr) {
+            if (i>0) {
+                curr = el
+                prev = arr[i - 1]
+                if (prev.clusterParent == curr.clusterParent) {
+                    delta = (i%2==0) ? 0.5 : -0.5
+                    if (prev.col < columnsTotal-1) {//строка не заполнена?
+                        curr.col = prev.col + 1
+                        curr.row = prev.row+delta
+                    }
+                    else {//переход на новую строку
+                        curr.col = 0
+                        curr.row = prev.row + 1+delta
+                    }
+                }
+                else {//новый кластер с новой строки
+                    curr.row = prev.row + 4
+                    curr.col = 0
+                    makeTitle(curr.clusterParent,curr.row-2,0)
+                }
+            }
+        })
+
+        lastRow=clearClusters[clearClusters.length-1].row
+        console.log("lastRow",lastRow)
 
 
+        function makeTitle(id,row,col) {
+            var group = lobby.find(x=>x.id==id)
+            svg.append("text").attr("class","title").attr("y",yScale(row)).attr("x",xScale(col)).text(group.name)
+        }
 
 
         function foci(clusterId){
             /*var groupname=lobby.find(x => x.id === cluster);
             var position = lobby.indexOf(groupname)
             var clusterNumber=groupname.id*/
-
+/*
             cluster=clearClusters.find(x=>x.cluster==clusterId)
             var position =clearClusters.indexOf(cluster)
             var col_pos=(position)%columns
             var row_pos=Math.floor(position/columns)
+*/
+            cluster=clearClusters.find(x=>x.cluster==clusterId)
 
             return {
-                "x" : xScale(col_pos),
-                "y": yScale(row_pos)
+                "x" : xScale(cluster.col),
+                "y": yScale(cluster.row)
             }
         };
 
@@ -205,7 +237,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             //.force('cluster', clustering)
             .force('x',forceX.strength(1))
             .force('y',forceY.strength(1))
-            .force('collide', d3.forceCollide(d => d.r + padding).strength(0.3).iterations(1))
+            .force('collide', d3.forceCollide(d => d.r + padding).strength(0.2).iterations(1))
             .on("tick", tick)
 
         const circles = svg.append('g')
@@ -218,7 +250,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .attr("cx", d => d.dx)
             .attr("cy", d => d.dy)
             .attr('stroke', 'black')
-            .attr('stroke-width', 0.6)
+            .attr('stroke-width', 0.2)
             .on('mouseover', showDetail)
             .on('mouseout', hideDetail)
             .call(d3.drag()
@@ -246,8 +278,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 .on("drag", dragged)
                 .on("end", dragended));
 
-        group1692= circles.filter(d=>d.clusterParent==1692).node()
-        $(group1692).wrap("<g></g>").attr("id","myGroup").attr("transform","translate(64,501)")
+
 
 
         function dragstarted(d) {
