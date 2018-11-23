@@ -78,11 +78,14 @@ width = 932
 var allData=[]
 var cors="https://cors-anywhere.herokuapp.com/"
 var url_lobby="https://declarator.org/api/lobby_group/"
+var url_dep="https://declarator.org/api/lobbist/"
 var promises = [];
 promises.push(getAPI(allData,null,url_lobby));
+promises.push(getAPI(allData,null,url_dep));
 
 Promise.all(promises).then(function (values) {
-    console.log("url", JSON.stringify(values[0]))
+    console.log("lob", JSON.stringify(values[0]))
+    console.log("dep", JSON.stringify(values[1]))
     rawLobby = values[0]
     data=rawLobby.map((d)=>{
         return{

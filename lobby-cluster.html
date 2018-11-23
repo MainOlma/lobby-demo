@@ -63,7 +63,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
 
     function dataDepMap(rawdata) {
-        data = rawdata.results.flatMap((d) => {
+        data = rawdata.flatMap((d) => {
             groups = d.groups
             return groups.map((b) => {
                 myGroups.add(b)
@@ -115,7 +115,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         Events()
 
         var width = 1200,
-            height = 5000,
+            height = 2000,
             padding = 1, // separation between same-color nodes
             clusterPadding = 20, // separation between different-color nodes
             maxRadius = 4;
@@ -183,7 +183,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .range([100, width-200]);
 
         var yScale = d3.scaleLinear()
-            .domain([0, 100])
+            .domain([0, 36])
             .range([100, height-100]);
 
         clearClusters[0].col=0; clearClusters[0].row=0
