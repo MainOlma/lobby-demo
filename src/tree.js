@@ -77,7 +77,7 @@ width = 932
 
 var allData=[]
 var cors="https://cors-anywhere.herokuapp.com/"
-var url_lobby="https://dev.declarator.org/api/lobby_group/"
+var url_lobby="https://declarator.org/api/lobby_group/"
 var promises = [];
 promises.push(getAPI(allData,null,url_lobby));
 
