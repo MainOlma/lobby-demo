@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
@@ -12,9 +13,9 @@
 
 <script src="src/tooltip.js"></script>
 <script>
-var allData=[]
-var cors="https://cors-anywhere.herokuapp.com/"
-var url_lobby="https://dev.declarator.org/api/lobby_group/"
+    var allData=[]
+    var cors="https://cors-anywhere.herokuapp.com/"
+    var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
 
     function getAPI(allData, startFrom,url) {
@@ -25,14 +26,14 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             },
         }).then(response => response.json())
             .then(data => {
-            //console.log("data.next",data.results)
+                //console.log("data.next",data.results)
                 allData=allData.concat(data.results);
-            const nextPage = data.next;
-            if (!nextPage)
-                return allData;
-            else
-                return getAPI(allData, nextPage,url);
-        });
+                const nextPage = data.next;
+                if (!nextPage)
+                    return allData;
+                else
+                    return getAPI(allData, nextPage,url);
+            });
     }
 
 
@@ -122,7 +123,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
 
         var n = data.length, // total number of nodes
-        m = myArrGroups.length// number of distinct clusters
+            m = myArrGroups.length// number of distinct clusters
 
         var color = d3.scaleSequential(d3.interpolateRainbow) //rainbow nodes
             .domain(d3.range(m));
@@ -224,12 +225,12 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             /*var groupname=lobby.find(x => x.id === cluster);
             var position = lobby.indexOf(groupname)
             var clusterNumber=groupname.id*/
-/*
-            cluster=clearClusters.find(x=>x.cluster==clusterId)
-            var position =clearClusters.indexOf(cluster)
-            var col_pos=(position)%columns
-            var row_pos=Math.floor(position/columns)
-*/
+            /*
+                        cluster=clearClusters.find(x=>x.cluster==clusterId)
+                        var position =clearClusters.indexOf(cluster)
+                        var col_pos=(position)%columns
+                        var row_pos=Math.floor(position/columns)
+            */
             cluster=clearClusters.find(x=>x.cluster==clusterId)
 
             return {
