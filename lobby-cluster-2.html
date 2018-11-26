@@ -42,6 +42,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
     var tooltip = floatingTooltip('gates_tooltip', 240);
     var data=[];
     var lobby=[];
+    var lobby_level_0=[];
     var myGroups = new Set();
     var myArrGroups = new Array()
     var files = ["data/deputates.json", "data/lobby_group.json"];
@@ -86,7 +87,6 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
     }
 
     function getLobbyMap(rawdata) {
-
         lobby = rawdata.map((d,i) => {
             return {
                 index:i,
@@ -97,7 +97,9 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 tree_id:d.tree_id
             }
         })
-        //console.log("lobby", lobby)
+        lobby_level_0=lobby.filter(x=>x.level==0)
+
+        console.log("lobby_0", lobby_level_0)
     }
 
 
@@ -176,7 +178,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         var clearClusters=clusters.filter(function(el) { return el; })//remove null from array
         clearClusters.sort(function(a, b) { return b.count - a.count; })
         clearClusters.sort(function(a, b) { return a.clusterParent - b.clusterParent; })
-        console.log("clearClusters",clearClusters)
+        //console.log("clearClusters",clearClusters)
         MakeSelect(clearClusters)
 
         var nodes2 = nodes.concat(clearClusters);//merge nodes and clusters signs
@@ -223,7 +225,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     break;
                 case 5993://региональное
                     curr.row =10
-                    curr.col = 8
+                    curr.col = 7
                     break;
                 case 6079://отраслевое
                     curr.row =6
@@ -238,14 +240,54 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     curr.col = 1
                     break;
                 default:
-                    curr.row =4
-                    curr.col = 8
+                    curr.row =5
+                    curr.col = 7
+
             }
+
         })
+        makeEncloses()
+
+        function makeEncloses() {
+            svg.append("g").attr("class", "encloses")
+            lobby_level_0.forEach(function (level) {
+
+                svg.select("g.encloses").append("path").attr("class", "enclose")
+                    .attr("fill", "none")
+                    .attr("id", "enclose" + level.id)
+
+                svg.select("g.encloses").append("text")
+                    .attr("dy", -5)
+                    .append("textPath") //append a textPath to the text element
+                    .attr("xlink:href", "#enclose" + level.id) //place the ID of the path here
+                    .attr("startOffset", "25%")
+                    .style("text-anchor", "middle") //place the text halfway on the arc
+
+                    .text(level.name);
+            })
+        }
+
+
+        function encloses() {
+            lobby_level_0.forEach(function (level) {
+
+                var e = svg.select('path.enclose#enclose'+level.id)
+                var nd = nodes2.filter(x=>x.clusterParent==level.id)
+                var encloseCircle = d3.packEnclose(nd)
+                if (encloseCircle){
+                    var arc = d3.arc()
+                        .innerRadius(encloseCircle.r)
+                        .outerRadius(encloseCircle.r)
+                        .startAngle(-60 * (3.14/180)) //converting from degs to radians
+                        .endAngle(120 * (3.14/180))
+                    e.transition().duration(100).attr("transform", "translate("+encloseCircle.x+","+encloseCircle.y+")")
+                        .attr("d",arc())
+                }
+            })
+        }
 
         lastRow=clearClusters[clearClusters.length-1].row
         console.log("lastRow",lastRow)
-
 
         function makeTitle(id,row,col) {
             var group = lobby.find(x=>x.id==id)
@@ -254,24 +296,12 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
 
         function foci(clusterId){
-            /*var groupname=lobby.find(x => x.id === cluster);
-            var position = lobby.indexOf(groupname)
-            var clusterNumber=groupname.id*/
-/*
             cluster=clearClusters.find(x=>x.cluster==clusterId)
-            var position =clearClusters.indexOf(cluster)
-            var col_pos=(position)%columns
-            var row_pos=Math.floor(position/columns)
-*/
-            cluster=clearClusters.find(x=>x.cluster==clusterId)
-
             return {
                 "x" : xScale(cluster.col),
                 "y": yScale(cluster.row)
             }
-
-
-        };
+        }
 
         var forceX = d3.forceX((d) => foci(d.cluster).x);
         var forceY = d3.forceY((d) => foci(d.cluster).y);
@@ -287,7 +317,9 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .force('x',forceX.strength(0.1))
             .force('y',forceY.strength(0.1))
             .force('collide2', d3.forceCollide(d => d.r+1 ).strength(0.5).iterations(2))
+            .alphaTarget(0.03)
             .on("tick", tick)
+
 
         const circles = svg.append('g')
             .datum(nodes)
@@ -308,7 +340,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 .on("end", dragended));
 
         const labels = svg.append('g')
-            .datum(clearClusters)
+            .datum(clearClusters.filter(x=>x.count>10))
             .selectAll('.circle')
             .data(d => d)
             .enter().append('text')
@@ -366,6 +398,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             });
 
         function tick() {
+            encloses()
             circles
                 .attr('cx', d => d.x)
                 .attr('cy', d => d.y);
@@ -377,12 +410,13 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         // Move d to be adjacent to the cluster node.
         function clustering(alpha) {
             nodes.forEach((d) => {
-                const cluster = clusters[d.cluster];
+                const cluster = clearClusters.find(x=>x.cluster==d.cluster);
                 if (cluster === d) return;
                 let x = d.x - cluster.x;
                 let y = d.y - cluster.y;
                 let l = Math.sqrt((x * x) + (y * y));
                 const r = d.r + cluster.r;
+
                 if (l !== r) {
                     l = ((l - r) / l) * alpha;
                     d.x -= x *= l;
@@ -495,7 +529,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             var nest=d3.nest()
                 .key(d=>d.tree_id)
                 .entries(lobby)
-            console.log(nest)
+            //console.log(nest)
 
             data2=lobby.sort((a,b)=>a.tree_id-b.tree_id)
 
@@ -514,8 +548,8 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 .text((d)=>{
                     x=+d.level
                     if (x==0) y=""
-                    if (x==1) y="-"
-                    if (x==2) y="--"
+                    if (x==1) y="—"
+                    if (x==2) y="——"
                     return y+ d.name
                 });
 
