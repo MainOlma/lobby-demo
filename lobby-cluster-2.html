@@ -74,6 +74,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 return {
                     id: d.id,
                     name: d.fullname,
+                    fraction:d.fraction,
                     group: b
                 }
             })
@@ -129,8 +130,8 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         var n = data.length, // total number of nodes
         m = myArrGroups.length// number of distinct clusters
 
-        var color = d3.scaleSequential(d3.interpolateRainbow) //rainbow nodes
-            .domain(d3.range(m));
+        var color = d3.scaleOrdinal(d3.schemePaired)
+
 
         // The largest node for each cluster
         var clusters = new Array(m);
@@ -144,12 +145,13 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius,
                 d = {
                     name: d.name,
+                    fraction:d.fraction,
                     id: d.id,
                     cluster: +i,
                     clusterName: group.name,
                     clusterLevel:group.level,
                     clusterParent: clusterParentId,
-                    color:color(group.parent / 10),
+                    color:color(d.fraction),
                     r: r/10,
                     x: Math.cos(i / m * 2 * Math.PI) * 300 + width / 2 + Math.random(),
                     y: Math.sin(i / m * 2 * Math.PI) * 300 + height / 2 + Math.random()
@@ -257,7 +259,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     .attr("id", "enclose" + level.id)
 
                 svg.select("g.encloses").append("text")
-                    .attr("dy", -5)
+                    .attr("dy", -clusterPadding/2)
                     .append("textPath") //append a textPath to the text element
                     .attr("xlink:href", "#enclose" + level.id) //place the ID of the path here
                     .attr("startOffset", "25%")
@@ -468,24 +470,16 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             //d3.select(this).attr('stroke', 'black');
             var groupname=lobby.find(x => x.id === d.cluster)
 
+
             circles.filter(e=>e.id!=d.id).transition().attr('fill', "gray");
             circles.filter(e=>e.cluster===d.cluster).transition().attr('fill', 'blue');
             circles.filter(e=>e.id===d.id).transition().attr('fill', 'red');
 
-            var content = '<span class="name">ФИО: </span><span class="value">' +
-                d.name +
-                '</span><br/>' +
-                '<span class="name">Group: </span><span class="value">' +
-                d.cluster + ' '+groupname.name+
-
-                '</span><br/>' +
-                '<span class="name">ParentID: </span><span class="value">' +
-                d.clusterParent +
-
-                '</span><br/>' +
-                '<span class="name">ID: </span><span class="value">' +
-                d.id +
-                '</span>';
+            var content =
+                '<span class="name">'+d.name+' </span><br/>' +
+                '<span class="value">' +d.fraction+'</span><br/>' +
+               '<span class="value">'+groupname.name+' '+d.cluster+'</span><br/>' +
+                '<span class="name">ID: </span><span class="value">' + d.id + '</span>';
 
             tooltip.showTooltip(content, d3.event);
         }
