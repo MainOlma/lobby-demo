@@ -7,6 +7,7 @@
 <body>
 <div id="controls">
     <input type="search" id="search" name="q"  placeholder="Роскомнадзор, Жириновский" size="25">
+    <button type="btn" id="clear" name="q"  >Clear</button>
 
 </div>
 <div id="clusters"></div>
@@ -538,29 +539,36 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             var select = d3.select('#controls')
                 .append('select')
                 .attr('class','select')
-                //.on('mouseover',onchange)
+                .on('change',onchange)
 
             var options = select
                 .selectAll('option')
                 .data(data2).enter()
                 .append('option')
+                .attr("value",d=>d.id)
                 .text((d)=>{
                     x=+d.level
                     if (x==0) y=""
-                    if (x==1) y="—"
-                    if (x==2) y="——"
+                    if (x==1) y="— "
+                    if (x==2) y="—— "
                     return y+ d.name
                 })
-                .on('mouseover',onchange);
+
+
+
 
             function onchange() {
-                selectValue = d3.select('select').property('value')
+                var selectValue = d3.select('select').property('value')
+                 result=circles.filter(x=>x.cluster==selectValue)
+                hightlightOn(result)
+
                 d3.select('body')
                     .append('p')
                     .text(selectValue + ' is the last selected option.')
             }
 
             var serchbox=d3.select("#search").on("keyup",handleClickSearch)
+            var clearbtn=d3.select("#clear").on("click",hightlightOff)
 
             // Search
             function handleClickSearch(event){
