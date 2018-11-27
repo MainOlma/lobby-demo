@@ -6,7 +6,8 @@
 </head>
 <body>
 <div id="controls">
-<button>123</button>
+    <input type="search" id="search" name="q"  placeholder="Роскомнадзор, Жириновский" size="25">
+
 </div>
 <div id="clusters"></div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -308,6 +309,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         var forceX = d3.forceX((d) => foci(d.cluster).x);
         var forceY = d3.forceY((d) => foci(d.cluster).y);
 
+
         var force = d3.forceSimulation()
             .nodes(nodes2)
             //.force('center', d3.forceCenter(width / 2, height / 2))
@@ -466,6 +468,8 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
    * details of a bubble in the tooltip.
    */
         function showDetail(d) {
+            circles.style("opacity",1).transition().attr("fill", d=>d.color)
+            labels.transition().style("opacity",1)
             // change outline to indicate hover state.
             //d3.select(this).attr('stroke', 'black');
             var groupname=lobby.find(x => x.id === d.cluster)
@@ -489,7 +493,8 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
      */
         function hideDetail(d) {
             // reset outline
-            circles.transition().attr('fill', d=>d.color);
+            circles.transition().attr('fill', d=>d.color).style("opacity",1);
+
             //d3.select(this).attr('stroke', d3.rgb(color(d.cluster / 10)).darker());
             tooltip.hideTooltip();
         }
@@ -533,7 +538,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             var select = d3.select('#controls')
                 .append('select')
                 .attr('class','select')
-                .on('change',onchange)
+                //.on('mouseover',onchange)
 
             var options = select
                 .selectAll('option')
@@ -545,14 +550,44 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     if (x==1) y="—"
                     if (x==2) y="——"
                     return y+ d.name
-                });
+                })
+                .on('mouseover',onchange);
 
             function onchange() {
                 selectValue = d3.select('select').property('value')
                 d3.select('body')
                     .append('p')
                     .text(selectValue + ' is the last selected option.')
-            };
+            }
+
+            var serchbox=d3.select("#search").on("keyup",handleClickSearch)
+
+            // Search
+            function handleClickSearch(event){
+                currentSearchTerm = document.getElementById("search").value;
+                console.log(currentSearchTerm);
+                search(currentSearchTerm);
+                return false;
+            }
+
+            function search(term){
+                result=circles.filter(x=>
+                    (x.name.toLowerCase().includes(term.toLowerCase()) ||
+                    x.clusterName.toLowerCase().includes(term.toLowerCase())))
+                term!=""? hightlightOn(result): hightlightOff()
+            }
+
+            function hightlightOn(spot) {
+                circles.transition().attr("fill", d=>d.color).style("opacity",0.3)
+                labels.transition().style("opacity",0.3)
+                spot.transition().attr("fill","yellow").style("opacity",1)
+            }
+
+            function hightlightOff() {
+                circles.transition().attr("fill", d=>d.color).style("opacity",1)
+                labels.transition().style("opacity",1)
+            }
+
         }
 
 
