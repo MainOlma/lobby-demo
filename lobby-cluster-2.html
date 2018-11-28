@@ -357,16 +357,20 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
         const labels = svg.append('g')
             .datum(clearClusters.filter(x=>x.count>10))
-            .selectAll('.circle')
+            .selectAll('.g')
             .data(d => d)
-            .enter().append('text')
+            .enter().append("g")
             .attr('class', "lobby_label")
             .attr('fill', d => d3.rgb(d.color).darker())
             .attr("x", d => d.x)
             .attr("y", d => d.y)
+            .attr("transform",d=>"translate("+d.x+" "+ d.y+")")
+            //.append('text')
             .attr("pointer-events","none")
             .attr("text-anchor","middle")
-            .text(d=>d.clusterName)
+            //.text(d=>d.clusterName)
+            .each(makeText)
+
             //.attr('stroke', 'black')
             //.attr('stroke-width', 0.6)
             //.on('mouseover', overLabel)
@@ -376,7 +380,24 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 .on("drag", dragged)
                 .on("end", dragended));
 
+        function makeText(d,i) {
+            console.log(d.clusterName)
+            d3.select(this).append("text").text(d.clusterName).each(makeBack)
+        }
 
+        function makeBack() {
+            var width, height, x, y
+            width = this.getBBox().width+4
+            height = this.getBBox().height
+            x = this.getBBox().x-2
+            y = this.getBBox().y
+            d3.select(this.parentNode).insert("rect", "text")
+                .attr("x", x)
+                .attr("y", y)
+                .attr("width", width)
+                .attr("height", height)
+                .attr("class", "backForLabel")
+        }
 
 
         function dragstarted(d) {
@@ -421,7 +442,9 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 .attr('cy', d => d.y);
             labels
                 .attr('x', d => d.x)
-                .attr('y', d => d.y);
+                .attr('y', d => d.y)
+                .attr("transform",d=>"translate("+d.x+" "+ d.y+")");
+
         }
 
         // Move d to be adjacent to the cluster node.
