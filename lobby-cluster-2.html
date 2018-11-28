@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
+    <link rel="stylesheet" href="css/bulma.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/bubble_chart.css">
 </head>
 <body>
-<div id="controls">
-    <input type="search" id="search" name="q"  placeholder="Роскомнадзор, Жириновский" size="25">
-    <button type="btn" id="clear" name="q"  >Clear</button>
+<div id="controls" class="field is-grouped control">
+    <div class="select is-small">
+        <select id="select_lobby"></select>
+    </div>
+    <div class="select is-small">
+        <select id="select_fraction"></select>
+    </div>
+    <input class="input is-small" type="text" id="search" name="q"  placeholder="Роскомнадзор, Жириновский" size="25">
+    <button class="button  is-small"type="btn" id="clear" name="q"  >Clear</button>
 
 </div>
 <div id="clusters"></div>
@@ -142,10 +149,11 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         var clusters = new Array(m);
 
         var nodes = data.map(function (d) {
+            var clusterParentId, clusterParent2Id
             var group=lobby.find(x => x.id === d.group)
             if (group.level==0 ) clusterParentId=group.parent
             if (group.level==1 ) clusterParentId=lobby.find(x=>x.id==group.parent).id
-            if (group.level==2 ) clusterParentId=lobby.find(x=>x.id==lobby.find(x=>x.id==group.parent).parent).id
+            if (group.level==2 ) {clusterParentId=lobby.find(x=>x.id==lobby.find(x=>x.id==group.parent).parent).id;clusterParent2Id=lobby.find(x=>x.id==group.parent).id}
             var i = +d.group,
                 r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius,
                 d = {
@@ -156,6 +164,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     clusterName: group.name,
                     clusterLevel:group.level,
                     clusterParent: clusterParentId,
+                    clusterParentMiddle: clusterParent2Id ? clusterParent2Id : null,
                     color:color(d.fraction),
                     r: r/10,
                     x: Math.cos(i / m * 2 * Math.PI) * 300 + width / 2 + Math.random(),
@@ -351,16 +360,17 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .selectAll('.circle')
             .data(d => d)
             .enter().append('text')
-            //.attr('r', d => d.r)
+            .attr('class', "lobby_label")
             .attr('fill', d => d3.rgb(d.color).darker())
             .attr("x", d => d.x)
             .attr("y", d => d.y)
+            .attr("pointer-events","none")
             .attr("text-anchor","middle")
             .text(d=>d.clusterName)
             //.attr('stroke', 'black')
             //.attr('stroke-width', 0.6)
-            .on('mouseover', overLabel)
-            .on('mouseout', outLabel)
+            //.on('mouseover', overLabel)
+            //.on('mouseout', outLabel)
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
@@ -496,18 +506,18 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
      */
         function hideDetail(d) {
             // reset outline
-            circles.transition().attr('fill', d=>d.color).style("opacity",1).attr('stroke', 'none');
+            circles.transition().attr('stroke', 'none');
 
             //d3.select(this).attr('stroke', d3.rgb(color(d.cluster / 10)).darker());
             tooltip.hideTooltip();
         }
 
         function overLabel(d) {
-            d3.select(this).attr("fill","red")
+            d3.select(this).style("display","none")
         }
 
         function outLabel(d) {
-            d3.select(this).attr("fill",d=>d3.rgb(d.color).darker())
+            d3.select(this).style("display","block")
         }
 
         /*
@@ -539,9 +549,11 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 .sort((a,b)=>a.clusterParent-b.clusterParent)
 
             var select = d3.select('#controls')
-                .append('select')
-                .attr('class','select')
+                .select('select')
+                .attr('placeholder','choose')
                 .on('change',onchange)
+
+            select.append('option').text("Лобби")
 
             var options = select
                 .selectAll('option')
@@ -549,19 +561,32 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 .append('option')
                 .attr("value",d=>d.id)
                 .text((d)=>{
+
                     x=+d.level
-                    if (x==0) y=""
-                    if (x==1) y="— "
-                    if (x==2) y="—— "
+                    if (x==0) y="\xA0"
+                    if (x==1) y="\xA0\xA0\xA0\xA0"
+                    if (x==2) y="\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0"
                     return y+ d.name
                 })
+                .each(function(d) {
+                    console.log(nodes)
+                    t=nodes.filter(x=>x.cluster==d.id ||
+                        x.clusterParent==d.id||
+                        x.clusterParentMiddle==d.id)
+                    console.log(t)
+                    if (t.length==0) {
+
+                        d3.select(this).property("disabled", true)
+                    }})
 
 
 
 
             function onchange() {
                 var selectValue = d3.select('select').property('value')
-                 result=circles.filter(x=>x.cluster==selectValue)
+                 result=circles.filter(x=>x.cluster==selectValue ||
+                     x.clusterParent==selectValue ||
+                     x.clusterParentMiddle==selectValue)
                 hightlightOn(result)
 
                 d3.select('body')
@@ -590,10 +615,12 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             function hightlightOn(spot) {
                 circles.transition().attr("fill", d=>d.color).style("opacity",0.3)
                 labels.transition().style("opacity",0.3)
-                spot.transition().attr("fill","yellow").style("opacity",1)
+                spot.transition().style("opacity",1)
             }
 
             function hightlightOff() {
+                d3.selectAll("#search").property("value","")
+                d3.selectAll("select").property("selectedIndex", 0)
                 circles.transition().attr("fill", d=>d.color).style("opacity",1)
                 labels.transition().style("opacity",1)
             }
