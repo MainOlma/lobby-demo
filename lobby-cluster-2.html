@@ -13,7 +13,7 @@
 <div id="clusters"></div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="//d3js.org/d3.v5.min.js"></script>
-
+<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
 <script src="src/tooltip.js"></script>
 <script>
 var allData=[]
@@ -132,7 +132,10 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         var n = data.length, // total number of nodes
         m = myArrGroups.length// number of distinct clusters
 
-        var color = d3.scaleOrdinal(d3.schemePaired)
+        var color = d3.scaleOrdinal()
+            .domain(['Единая Россия','ЛДПР','КПРФ','Справедливая Россия',''])
+            .range(['#241D7A','#00AAFf','#BF0C0C','#FFA400','#888888'])
+            .unknown("#888888")
 
 
         // The largest node for each cluster
@@ -178,6 +181,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .attr('height', height)
             .attr('width', width)
             .append('g')
+
 
         var clearClusters=clusters.filter(function(el) { return el; })//remove null from array
         clearClusters.sort(function(a, b) { return b.count - a.count; })
@@ -332,11 +336,9 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .data(d => d)
             .enter().append('circle')
             .attr('r', d => d.r)
-            .attr('fill', d => d.color)
+            .attr('fill', d=>d.color)
             .attr("cx", d => d.dx)
             .attr("cy", d => d.dy)
-            .attr('stroke', 'black')
-            .attr('stroke-width', 0.2)
             .on('mouseover', showDetail)
             .on('mouseout', hideDetail)
             .call(d3.drag()
@@ -469,16 +471,16 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
    * details of a bubble in the tooltip.
    */
         function showDetail(d) {
-            circles.style("opacity",1).transition().attr("fill", d=>d.color)
-            labels.transition().style("opacity",1)
+            //circles.style("opacity",1).transition().attr("fill", d=>d.color)
+            //labels.transition().style("opacity",1)
             // change outline to indicate hover state.
             //d3.select(this).attr('stroke', 'black');
             var groupname=lobby.find(x => x.id === d.cluster)
 
 
-            circles.filter(e=>e.id!=d.id).transition().attr('fill', "gray");
-            circles.filter(e=>e.cluster===d.cluster).transition().attr('fill', 'blue');
-            circles.filter(e=>e.id===d.id).transition().attr('fill', 'red');
+            //circles.filter(e=>e.id!=d.id).transition().attr('fill', "gray");
+            //circles.filter(e=>e.cluster===d.cluster).transition().attr('fill', 'blue');
+            circles.filter(e=>e.id===d.id).transition().attr('stroke', '#000').attr('stroke-width', '2px');
 
             var content =
                 '<span class="name">'+d.name+' </span><br/>' +
@@ -494,7 +496,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
      */
         function hideDetail(d) {
             // reset outline
-            circles.transition().attr('fill', d=>d.color).style("opacity",1);
+            circles.transition().attr('fill', d=>d.color).style("opacity",1).attr('stroke', 'none');
 
             //d3.select(this).attr('stroke', d3.rgb(color(d.cluster / 10)).darker());
             tooltip.hideTooltip();
