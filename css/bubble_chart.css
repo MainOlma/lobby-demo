@@ -91,3 +91,4 @@ svg text.title{ font-family: 'Poiret One', cursive; font-size: 40px;text-transfo
     fill: #fff;
     opacity: 0.5}
 div#controls{position: fixed;top:0;}
+div#controls select {width: 152px;}

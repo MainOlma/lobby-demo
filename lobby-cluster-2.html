@@ -7,6 +7,7 @@
 </head>
 <body>
 <div id="controls" class="field is-grouped control">
+
     <div class="select is-small">
         <select id="select_lobby"></select>
     </div>
@@ -15,6 +16,9 @@
     </div>
     <div class="select is-small">
         <select id="select_election_method"></select>
+    </div>
+    <div class="select is-small">
+        <select id="select_committees"></select>
     </div>
     <div class="control has-icons-right ">
     <input class="input is-small" type="text" id="search" name="q"  placeholder="Роскомнадзор, Жириновский" size="25">
@@ -99,7 +103,8 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     name: d.fullname,
                     fraction:d.fraction,
                     group: b,
-                    election_method:d.election_method
+                    election_method:d.election_method,
+                    committees:d.committees
                 }
             })
         });
@@ -182,6 +187,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     clusterParentMiddle: clusterParent2Id ? clusterParent2Id : null,
                     color:color(d.fraction),
                     election_method:d.election_method,
+                    committees:d.committees,
                     r: r,
                     x: /*Math.cos(i / m * 2 * Math.PI) * 300*/ + width / 2 + Math.random(),
                     y: /*Math.sin(i / m * 2 * Math.PI) * 300*/ + height / 2 + Math.random()
@@ -580,6 +586,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
             createSelect("select_election_method", "Способ избрания","election_method")
             createSelect("select_fraction", "Фракция","fraction")
+            createSelect("select_committees", "Комитет","committees")
             //createElectionSelect(election_method);
 
 
@@ -617,24 +624,20 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     }})
 
 
-            function createElectionSelect(election_method) {
-                var select = d3.select('#controls')
-                    .select('select#select_election_method')
-                    .on('change',onchange)
-                select.append('option').text("Способ избрания").attr("value",-1)
-                var options = select
-                    .selectAll('option.opt')
-                    .data(election_method).enter()
-                    .append('option')
-                    .attr("value",d=>d)
-                    .text((d)=>d)
-            }
-
             function createSelect(selector, placeholder,key) {
+                jj2  = []//массив значений ключа
+                data.forEach(function (dep) {
+                    keys=dep[key] // ключ может быть массивом значений
+                    Array.isArray(keys)
+                        ?   keys.forEach(function (comitet) {//надо пройти по нему
+                                jj2.push({key: comitet}); //получаем значения ключа в том числе и из массивов
+                            })
+                        :   jj2.push({key: dep[key]})//если не массив - просто берём значение
+                })
                 var nest=d3.nest()
-                    .key(d=>d[key])
-                    .entries(data)
-                var opts=nest.map(x=>x.key)
+                    .key(d=>d.key)
+                    .entries(jj2)
+                var opts=nest.flatMap(x=>x.key)
                 var select = d3.select('#controls')
                     .select('select#'+selector)
                     .on('change',onchange)
@@ -652,6 +655,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 var s_lobby = d3.select('select#select_lobby').property('value')
                 var s_method = d3.select('select#select_election_method').property('value')
                 var s_fraction = d3.select('select#select_fraction').property('value')
+                var s_comitet = d3.select('select#select_committees').property('value')
 
                  result=circles.filter(x=>
                      ((i_search!="") ?
@@ -666,6 +670,8 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                      ((s_method!=-1) ? (x.election_method==s_method) : true)
                  &&
                      ((s_fraction!=-1) ? (x.fraction==s_fraction) :true)
+                 &&
+                     ((s_comitet!=-1) ? x.committees.includes(s_comitet): true)
                  )
                 hightlightOn(result)
 
