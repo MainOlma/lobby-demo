@@ -155,7 +155,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             if (group.level==1 ) clusterParentId=lobby.find(x=>x.id==group.parent).id
             if (group.level==2 ) {clusterParentId=lobby.find(x=>x.id==lobby.find(x=>x.id==group.parent).parent).id;clusterParent2Id=lobby.find(x=>x.id==group.parent).id}
             var i = +d.group,
-                r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * maxRadius,
+                r =Math.floor(Math.random() * (maxRadius-3))+3,
                 d = {
                     name: d.name,
                     fraction:d.fraction,
@@ -166,9 +166,9 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     clusterParent: clusterParentId,
                     clusterParentMiddle: clusterParent2Id ? clusterParent2Id : null,
                     color:color(d.fraction),
-                    r: r/10,
-                    x: Math.cos(i / m * 2 * Math.PI) * 300 + width / 2 + Math.random(),
-                    y: Math.sin(i / m * 2 * Math.PI) * 300 + height / 2 + Math.random()
+                    r: r,
+                    x: /*Math.cos(i / m * 2 * Math.PI) * 300*/ + width / 2 + Math.random(),
+                    y: /*Math.sin(i / m * 2 * Math.PI) * 300*/ + height / 2 + Math.random()
 
                 };
 
@@ -334,7 +334,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .force('cluster', clustering)
             .force('x',forceX.strength(0.1))
             .force('y',forceY.strength(0.1))
-            .force('collide2', d3.forceCollide(d => d.r+1 ).strength(0.5).iterations(2))
+            .force('collide2', d3.forceCollide(d => d.r+2 ).strength(0.5).iterations(2))
             .alphaTarget(0.03)
             .on("tick", tick)
 
