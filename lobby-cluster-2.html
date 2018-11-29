@@ -11,9 +11,9 @@
     <div class="select is-small">
         <select id="select_lobby"></select>
     </div>
-    <div class="select is-small">
+    <!--<div class="select is-small">
         <select id="select_fraction"></select>
-    </div>
+    </div>-->
     <div class="select is-small">
         <select id="select_election_method"></select>
     </div>
@@ -162,7 +162,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
         var color = d3.scaleOrdinal()
             .domain(['Единая Россия','ЛДПР','КПРФ','Справедливая Россия'])
-            .range(['#A3A2C6','#60c5fd','#E39B9E','#febe68'])
+            .range(['#50A2FE','#7ACBF9','#E38889','#FEA247'])
             .unknown("#ababab")
 
 
@@ -174,15 +174,20 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             var group=lobby.find(x => x.id === d.group)
             if (group.level==0 ) clusterParentId=group.parent
             if (group.level==1 ) clusterParentId=lobby.find(x=>x.id==group.parent).id
-            if (group.level==2 ) {clusterParentId=lobby.find(x=>x.id==lobby.find(x=>x.id==group.parent).parent).id;clusterParent2Id=lobby.find(x=>x.id==group.parent).id}
+            if (group.level==2 ) {clusterParentId=lobby.find(x=>x.id==lobby.find(x=>x.id==group.parent).parent).id;clusterParent2Id=lobby.find(x=>x.id==group.parent).id;clusterParent2Name=lobby.find(x=>x.id==group.parent).name}
             var i = +d.group,
+                j = clusterParent2Id ? clusterParent2Id : +i
                 r =Math.floor(Math.random() * (maxRadius-3))+3,
                 d = {
                     name: d.name,
                     fraction:d.fraction,
                     id: d.id,
-                    cluster: +i,
-                    clusterName: group.name,
+                    //cluster: +i,
+                    cluster: clusterParent2Id ? clusterParent2Id : +i,
+                    clusterMin: +i,
+
+                    //clusterName: group.name,
+                    clusterName: clusterParent2Id ? clusterParent2Name : group.name,
                     clusterLevel:group.level,
                     clusterParent: clusterParentId,
                     clusterParentMiddle: clusterParent2Id ? clusterParent2Id : null,
@@ -196,13 +201,14 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 };
 
             var count=0;
-            (clusters[i] ) ? count=clusters[i].count+1 : count=1 //counter of nodes in cluster
-            if (!clusters[i] || (r > clusters[i].r)) {
-                clusters[i] = d;
+            (clusters[j] ) ? count=clusters[j].count+1 : count=1 //counter of nodes in cluster
+            if (!clusters[j] || (r > clusters[j].r)) {
+                clusters[j] = d;
             };
-            clusters[i].count=count//write count of nodes of current cluster
+            clusters[j].count=count//write count of nodes of current cluster
             return d;
         });
+        console.log("clusters",clusters)
         nodes.sort(function(a, b) { return b.count - a.count; })
         nodes.sort(function(a, b) { return a.clusterParent - b.clusterParent; })
 
@@ -530,8 +536,9 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             //labels.transition().style("opacity",1)
             // change outline to indicate hover state.
             //d3.select(this).attr('stroke', 'black');
-            var groupname=lobby.find(x => x.id === d.cluster)
 
+            //var groupname=lobby.find(x => x.id === d.cluster)
+            var groupname=lobby.find(x => x.id === d.clusterMin)
 
             //circles.filter(e=>e.id!=d.id).transition().attr('fill', "gray");
             //circles.filter(e=>e.cluster===d.cluster).transition().attr('fill', 'blue');
@@ -586,7 +593,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
 
             createSelect("select_election_method", "Способ избрания","election_method")
-            createSelect("select_fraction", "Фракция","fraction")
+            //createSelect("select_fraction", "Фракция","fraction")
             createSelect("select_committees", "Комитет","committees")
             //createElectionSelect(election_method);
 
@@ -607,23 +614,37 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 .selectAll('option.opt')
                 .data(data2).enter()
                 .append('option')
+                .classed("opt",true)
                 .attr("value",d=>d.id)
-                .text((d)=>{
+                .text(d=>{
                     x=+d.level
                     if (x==0) y="\xA0"
                     if (x==1) y="\xA0\xA0\xA0\xA0"
                     if (x==2) y="\xA0\xA0\xA0\xA0\xA0\xA0\xA0\xA0"
+
+                    if (x==0) return y+ d.name.toUpperCase()
                     return y+ d.name
                 })
+                .each(PrependOption)
                 .each(function(d) {
                     t=nodes.filter(x=>x.cluster==d.id ||
                         x.clusterParent==d.id||
-                        x.clusterParentMiddle==d.id)
+                        x.clusterParentMiddle==d.id||
+                        x.clusterMin==d.id)
                     if (t.length==0) {
 
                         d3.select(this).property("disabled", true)
+                        d3.select(this).remove()
                     }})
 
+
+            function PrependOption(d){
+                if (d.level==0) {
+                    var ti = document.createElement('option');
+                    ti.disabled=true
+                    if (this.nextSibling && this.parentNode) this.parentNode.insertBefore(ti, this);
+                }
+            }
 
             function createSelect(selector, placeholder,key) {
                 jj2  = []//массив значений ключа
@@ -648,14 +669,18 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     .data(opts).enter()
                     .append('option')
                     .attr("value",d=>d)
-                    .text((d)=>d)
+                    .text((d)=>{
+                        var text = key=="committees" ? d.replace("Комитет ГД п","П") : d
+
+                        return text}
+                        )
             }
 
             function onchange() {
                 var i_search = d3.select('input#search').property('value')
                 var s_lobby = d3.select('select#select_lobby').property('value')
                 var s_method = d3.select('select#select_election_method').property('value')
-                var s_fraction = d3.select('select#select_fraction').property('value')
+                /*var s_fraction = d3.select('select#select_fraction').property('value')*/
                 var s_comitet = d3.select('select#select_committees').property('value')
 
                  result=circles.filter(x=>
@@ -666,11 +691,12 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                      ((s_lobby!=-1) ?
                          (x.cluster==s_lobby ||
                          x.clusterParent==s_lobby ||
+                         x.clusterMin==s_lobby ||
                          x.clusterParentMiddle==s_lobby) : true)
                  &&
                      ((s_method!=-1) ? (x.election_method==s_method) : true)
-                 &&
-                     ((s_fraction!=-1) ? (x.fraction==s_fraction) :true)
+                 /*&&
+                     ((s_fraction!=-1) ? (x.fraction==s_fraction) :true)*/
                  &&
                      ((s_comitet!=-1) ? x.committees.includes(s_comitet): true)
                  )
