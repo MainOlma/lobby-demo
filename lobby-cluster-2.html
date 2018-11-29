@@ -95,6 +95,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
     function dataDepMap(rawdata) {
         data = rawdata.flatMap((d) => {
             groups = d.groups
+            groups.length==0 ? groups=[7623] : groups // кто без групп? -> в группу "Не выявлено"
             return groups.map((b) => {
                 myGroups.add(b)
                 /*the set provide unique values of lobby groups*/
