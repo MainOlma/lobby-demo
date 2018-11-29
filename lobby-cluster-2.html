@@ -130,7 +130,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
         Events()
 
         var width = 1200,
-            height = 2000,
+            height = 1000,
             padding = 10, // separation between same-color nodes
             clusterPadding = 30, // separation between different-color nodes
             maxRadius = 10;
@@ -207,7 +207,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .range([100, width-200]);
 
         var yScale = d3.scaleLinear()
-            .domain([0, 36])
+            .domain([0, 15])
             .range([100, height-100]);
 
         clearClusters[0].col=0; clearClusters[0].row=0
@@ -236,23 +236,23 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             curr = el
 
             switch (curr.clusterParent) {
-                case 5951://федеральное
+                case 7336://федеральное
                     curr.row =1
-                    curr.col = 6
+                    curr.col = 7
                     break;
-                case 5993://региональное
+                case 7379://региональное
                     curr.row =10
                     curr.col = 7
                     break;
-                case 6079://отраслевое
-                    curr.row =6
+                case 7465://отраслевое
+                    curr.row =5
                     curr.col = 4
                     break;
-                case 6127://общ-полит
+                case 7513://общ-полит
                     curr.row =2
                     curr.col = 1
                     break;
-                case 6139://фин-пром группы
+                case 7525://фин-пром группы
                     curr.row =10
                     curr.col = 1
                     break;
