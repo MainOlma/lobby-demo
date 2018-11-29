@@ -16,8 +16,18 @@
     <div class="select is-small">
         <select id="select_election_method"></select>
     </div>
+    <div class="control has-icons-right ">
     <input class="input is-small" type="text" id="search" name="q"  placeholder="Роскомнадзор, Жириновский" size="25">
-    <button class="button  is-small"type="btn" id="clear" name="q"  >Clear</button>
+        <span class="icon is-small is-right">
+            <i class="fas fa-search"></i>
+        </span>
+    </div>
+    <a class="button  is-right" id="clear">
+        <span class="icon">
+            <i class="fas fa-times"></i>
+        </span>
+        <span>Сбросить фильтры</span>
+    </a>
 
 </div>
 <div id="clusters"></div>
@@ -25,6 +35,7 @@
 <script src="//d3js.org/d3.v5.min.js"></script>
 <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
 <script src="src/tooltip.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 <script>
 var allData=[]
 var cors="https://cors-anywhere.herokuapp.com/"
