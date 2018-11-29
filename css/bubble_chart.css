@@ -90,3 +90,4 @@ svg text.title{ font-family: 'Poiret One', cursive; font-size: 40px;text-transfo
 .backForLabel {
     fill: #fff;
     opacity: 0.5}
+div#controls{position: fixed;top:0;}

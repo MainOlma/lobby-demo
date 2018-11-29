@@ -13,6 +13,9 @@
     <div class="select is-small">
         <select id="select_fraction"></select>
     </div>
+    <div class="select is-small">
+        <select id="select_election_method"></select>
+    </div>
     <input class="input is-small" type="text" id="search" name="q"  placeholder="Роскомнадзор, Жириновский" size="25">
     <button class="button  is-small"type="btn" id="clear" name="q"  >Clear</button>
 
@@ -84,7 +87,8 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     id: d.id,
                     name: d.fullname,
                     fraction:d.fraction,
-                    group: b
+                    group: b,
+                    election_method:d.election_method
                 }
             })
         });
@@ -166,6 +170,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     clusterParent: clusterParentId,
                     clusterParentMiddle: clusterParent2Id ? clusterParent2Id : null,
                     color:color(d.fraction),
+                    election_method:d.election_method,
                     r: r,
                     x: /*Math.cos(i / m * 2 * Math.PI) * 300*/ + width / 2 + Math.random(),
                     y: /*Math.sin(i / m * 2 * Math.PI) * 300*/ + height / 2 + Math.random()
@@ -237,20 +242,20 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
             switch (curr.clusterParent) {
                 case 7336://федеральное
-                    curr.row =1
-                    curr.col = 7
+                    curr.row =2
+                    curr.col = 7.5
                     break;
                 case 7379://региональное
                     curr.row =10
                     curr.col = 7
                     break;
                 case 7465://отраслевое
-                    curr.row =5
+                    curr.row =4
                     curr.col = 4
                     break;
                 case 7513://общ-полит
                     curr.row =2
-                    curr.col = 1
+                    curr.col = 0.5
                     break;
                 case 7525://фин-пром группы
                     curr.row =10
@@ -380,8 +385,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                 .on("drag", dragged)
                 .on("end", dragended));
 
-        function makeText(d,i) {
-            console.log(d.clusterName)
+        function makeText(d) {
             d3.select(this).append("text").text(d.clusterName).each(makeBack)
         }
 
@@ -560,31 +564,32 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             return x1 + x2;
         }
 
-        function MakeSelect(data) {
-            var nest=d3.nest()
-                .key(d=>d.tree_id)
-                .entries(lobby)
-            //console.log(nest)
+        function MakeSelect(data_clusters) {
+
+
+            createSelect("select_election_method", "Способ избрания","election_method")
+            createSelect("select_fraction", "Фракция","fraction")
+            //createElectionSelect(election_method);
+
 
             data2=lobby.sort((a,b)=>a.tree_id-b.tree_id)
 
-            data.sort((a,b)=>a.clusterName-b.clusterName)
+            data_clusters.sort((a,b)=>a.clusterName-b.clusterName)
                 .sort((a,b)=>a.clusterParent-b.clusterParent)
 
             var select = d3.select('#controls')
-                .select('select')
+                .select('select#select_lobby')
                 .attr('placeholder','choose')
                 .on('change',onchange)
 
-            select.append('option').text("Лобби")
+            select.append('option').text("Лобби").attr("value",-1)
 
             var options = select
-                .selectAll('option')
+                .selectAll('option.opt')
                 .data(data2).enter()
                 .append('option')
                 .attr("value",d=>d.id)
                 .text((d)=>{
-
                     x=+d.level
                     if (x==0) y="\xA0"
                     if (x==1) y="\xA0\xA0\xA0\xA0"
@@ -592,38 +597,75 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
                     return y+ d.name
                 })
                 .each(function(d) {
-                    console.log(nodes)
                     t=nodes.filter(x=>x.cluster==d.id ||
                         x.clusterParent==d.id||
                         x.clusterParentMiddle==d.id)
-                    console.log(t)
                     if (t.length==0) {
 
                         d3.select(this).property("disabled", true)
                     }})
 
 
-
-
-            function onchange() {
-                var selectValue = d3.select('select').property('value')
-                 result=circles.filter(x=>x.cluster==selectValue ||
-                     x.clusterParent==selectValue ||
-                     x.clusterParentMiddle==selectValue)
-                hightlightOn(result)
-
-                d3.select('body')
-                    .append('p')
-                    .text(selectValue + ' is the last selected option.')
+            function createElectionSelect(election_method) {
+                var select = d3.select('#controls')
+                    .select('select#select_election_method')
+                    .on('change',onchange)
+                select.append('option').text("Способ избрания").attr("value",-1)
+                var options = select
+                    .selectAll('option.opt')
+                    .data(election_method).enter()
+                    .append('option')
+                    .attr("value",d=>d)
+                    .text((d)=>d)
             }
 
-            var serchbox=d3.select("#search").on("keyup",handleClickSearch)
+            function createSelect(selector, placeholder,key) {
+                var nest=d3.nest()
+                    .key(d=>d[key])
+                    .entries(data)
+                var opts=nest.map(x=>x.key)
+                var select = d3.select('#controls')
+                    .select('select#'+selector)
+                    .on('change',onchange)
+                select.append('option').text(placeholder).attr("value",-1)
+                var options = select
+                    .selectAll('option.opt')
+                    .data(opts).enter()
+                    .append('option')
+                    .attr("value",d=>d)
+                    .text((d)=>d)
+            }
+
+            function onchange() {
+                var i_search = d3.select('input#search').property('value')
+                var s_lobby = d3.select('select#select_lobby').property('value')
+                var s_method = d3.select('select#select_election_method').property('value')
+                var s_fraction = d3.select('select#select_fraction').property('value')
+
+                 result=circles.filter(x=>
+                     ((i_search!="") ?
+                         (x.name.toLowerCase().includes(i_search.toLowerCase()) ||
+                          x.clusterName.toLowerCase().includes(i_search.toLowerCase())) : true)
+                     &&
+                     ((s_lobby!=-1) ?
+                         (x.cluster==s_lobby ||
+                         x.clusterParent==s_lobby ||
+                         x.clusterParentMiddle==s_lobby) : true)
+                 &&
+                     ((s_method!=-1) ? (x.election_method==s_method) : true)
+                 &&
+                     ((s_fraction!=-1) ? (x.fraction==s_fraction) :true)
+                 )
+                hightlightOn(result)
+
+            }
+
+            var serchbox=d3.select("#search").on("keyup",onchange)
             var clearbtn=d3.select("#clear").on("click",hightlightOff)
 
             // Search
             function handleClickSearch(event){
                 currentSearchTerm = document.getElementById("search").value;
-                console.log(currentSearchTerm);
                 search(currentSearchTerm);
                 return false;
             }
