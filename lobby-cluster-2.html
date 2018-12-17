@@ -107,7 +107,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
     function dataDepMap(rawdata) {
         data = rawdata.flatMap((d) => {
             groups = d.groups
-            groups.length==0 ? groups=[7623] : groups // кто без групп? -> в группу "Не выявлено"
+            groups.length==0 ? groups=[7917] : groups // кто без групп? -> в группу "Не выявлено"
             return groups.map((b) => {
                 myGroups.add(b)
                 /*the set provide unique values of lobby groups*/
@@ -269,23 +269,23 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             curr = el
 
             switch (curr.clusterParent) {
-                case 7336://федеральное
+                case 7624://федеральное
                     curr.row =2
                     curr.col = 7.5
                     break;
-                case 7379://региональное
+                case 7667://региональное
                     curr.row =10
                     curr.col = 7
                     break;
-                case 7465://отраслевое
+                case 7753://отраслевое
                     curr.row =4
                     curr.col = 4
                     break;
-                case 7513://общ-полит
+                case 7801://общ-полит
                     curr.row =2
                     curr.col = 0.5
                     break;
-                case 7525://фин-пром группы
+                case 7813://фин-пром группы
                     curr.row =10
                     curr.col = 1
                     break;
@@ -358,7 +358,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
 
         var force = d3.forceSimulation()
-            .nodes(nodes2)
+            .nodes(nodes)
             //.force('center', d3.forceCenter(width / 2, height / 2))
             //.force("gravity", d3.forceManyBody(-10).distanceMax(20))
             //.force("x", d3.forceX().strength(0.2))
@@ -369,8 +369,17 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .force('y',forceY.strength(0.1))
             .force('collide2', d3.forceCollide(d => d.r+2 ).strength(0.5).iterations(2))
             .alphaTarget(0.03)
+            //.alphaDecay(0.1)
             .on("tick", tick)
 
+        var label_force=d3.forceSimulation()
+            .nodes(clearClusters)
+            //.force('x',forceX.strength(0.1))
+            //.force('y',forceY.strength(0.1))
+            //.alphaDecay(0.15)
+            .force("gravity1", d3.forceManyBody(30).distanceMax(580).distanceMin(20))
+            //.force("gravity2", d3.forceManyBody(100).distanceMax(100).distanceMin(100))
+            .on("tick", tick2)
 
         const circles = svg.append('g')
             .datum(nodes)
@@ -383,6 +392,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .attr("cy", d => d.dy)
             .on('mouseover', showDetail)
             .on('mouseout', hideDetail)
+            .on('click', showCard)
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
@@ -399,7 +409,7 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
             .attr("y", d => d.y)
             .attr("transform",d=>"translate("+d.x+" "+ d.y+")")
             //.append('text')
-            .attr("pointer-events","none")
+            //.attr("pointer-events","none")
             .attr("text-anchor","middle")
             //.text(d=>d.clusterName)
             .each(makeText)
@@ -477,14 +487,19 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
         function tick() {
             encloses()
+
             circles
                 .attr('cx', d => d.x)
                 .attr('cy', d => d.y);
+
+
+            label_force.alphaTarget(0.03).restart();
+        }
+        function tick2() {
             labels
                 .attr('x', d => d.x)
                 .attr('y', d => d.y)
                 .attr("transform",d=>"translate("+d.x+" "+ d.y+")");
-
         }
 
         // Move d to be adjacent to the cluster node.
@@ -582,6 +597,10 @@ var url_lobby="https://dev.declarator.org/api/lobby_group/"
 
         function outLabel(d) {
             d3.select(this).style("display","block")
+        }
+
+        function showCard() {
+            d3.select("#card").style("display:block")
         }
 
         /*
