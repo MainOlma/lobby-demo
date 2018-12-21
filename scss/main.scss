@@ -21,6 +21,17 @@ a{
 
 @mixin is-($color){
   color: $color;
+  &.is-active{
+    background: $color;
+    border-color: $color;
+    color: $color-white;
+  }
+}
+.is-color-white {
+  @include is-($color-black);
+  &.is-active{
+    background: $color-blue;
+  }
 }
 .is-color-red {
   @include is-($color-red)
@@ -72,7 +83,7 @@ div#card {
     line-height: 1.75rem;
   }
 
-  span#fraction{
+  span#fraction_text{
     color: $color-gray;
     &.er{color: $color-blue;}
     &.kprf{color: $color-red;}

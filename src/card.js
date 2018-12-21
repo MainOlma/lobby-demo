@@ -3,7 +3,7 @@ function showCard(e) {
     var card=d3.select("#card"),          //container
         photo=card.select("#photo > img"),
         fullname=card.select("#fullname"),
-        fraction=card.select("#fraction"),
+        fraction=card.select("#fraction_text"),
         position=card.select("#position"),
         law_number_vnes=card.select("#law_number_vnes"),
         law_number_podpis=card.select("#law_number_podpis"),

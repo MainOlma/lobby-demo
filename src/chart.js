@@ -94,8 +94,6 @@ function getLobbyMap(rawdata) {
         }
     })
     lobby_level_0=lobby.filter(x=>x.level==0)
-
-    console.log("lobby_0", lobby_level_0)
 }
 
 
@@ -169,7 +167,6 @@ function doSomething() {
         clusters[j].count=count//write count of nodes of current cluster
         return d;
     });
-    console.log("clusters",clusters)
     nodes.sort(function(a, b) { return b.count - a.count; })
     nodes.sort(function(a, b) { return a.clusterParent - b.clusterParent; })
 
@@ -295,7 +292,7 @@ function doSomething() {
     }
 
     lastRow=clearClusters[clearClusters.length-1].row
-    console.log("lastRow",lastRow)
+
 
     function makeTitle(id,row,col) {
         var group = lobby.find(x=>x.id==id)
@@ -429,12 +426,9 @@ function doSomething() {
             };
         })
         .on("end",function(d,i) {
-            console.log(i,circles.size())
             if (i === circles.size()-1) {
-
                 MakeSelect(clearClusters)
             }
-            //MakeSelect(clearClusters)
         })
     ;
 
@@ -753,8 +747,10 @@ function doSomething() {
 
             if (d3.selectAll('#fraction .is-active').node()!=null)
                 b_fraction=d3.select('#fraction .is-active').property('value')
+
             if (d3.selectAll('#method .is-active').node()!=null)
                 b_method=d3.select('#method .is-active').property('value')
+
             if (d3.selectAll('#gender .is-active').node()!=null)
                 b_gender=d3.select('#gender .is-active').property('value')
 
@@ -782,8 +778,8 @@ function doSomething() {
                 (b_method ? (x.election_method==b_method) : true)
                 &&
                 (b_gender ? (x.gender==b_gender) : true)
-            )
-            //console.log(result)
+                )
+
             hightlightOn(result)
 
         }
@@ -808,7 +804,6 @@ function doSomething() {
         }
 
         function hightlightOn(spot) {
-            circles.transition ? console.log("yes") : console.log("no")
             circles.transition().attr("fill", d=>d.color).style("opacity",0.3)
             labels.transition().style("opacity",0.3)
 

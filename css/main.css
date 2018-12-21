@@ -6679,17 +6679,42 @@ header {
 a {
   text-decoration: underline; }
 
+.is-color-white {
+  color: #000000; }
+  .is-color-white.is-active {
+    background: #000000;
+    border-color: #000000;
+    color: #ffffff; }
+  .is-color-white.is-active {
+    background: #2FA3E4; }
+
 .is-color-red {
   color: #DA4141; }
+  .is-color-red.is-active {
+    background: #DA4141;
+    border-color: #DA4141;
+    color: #ffffff; }
 
 .is-color-blue {
   color: #2FA3E4; }
+  .is-color-blue.is-active {
+    background: #2FA3E4;
+    border-color: #2FA3E4;
+    color: #ffffff; }
 
 .is-color-orange {
   color: #FF7A00; }
+  .is-color-orange.is-active {
+    background: #FF7A00;
+    border-color: #FF7A00;
+    color: #ffffff; }
 
 .is-color-yellow {
   color: #F2B600; }
+  .is-color-yellow.is-active {
+    background: #F2B600;
+    border-color: #F2B600;
+    color: #ffffff; }
 
 div#controls {
   position: sticky;
@@ -6720,15 +6745,15 @@ div#card {
     margin-top: 32px;
     font-weight: bold;
     line-height: 1.75rem; }
-  div#card span#fraction {
+  div#card span#fraction_text {
     color: #C4C4C4; }
-    div#card span#fraction.er {
+    div#card span#fraction_text.er {
       color: #2FA3E4; }
-    div#card span#fraction.kprf {
+    div#card span#fraction_text.kprf {
       color: #DA4141; }
-    div#card span#fraction.ldpr {
+    div#card span#fraction_text.ldpr {
       color: #F2B600; }
-    div#card span#fraction.sr {
+    div#card span#fraction_text.sr {
       color: #FF7A00; }
   div#card .law_count {
     font-size: 56px;
