@@ -6686,7 +6686,8 @@ a {
     border-color: #000000;
     color: #ffffff; }
   .is-color-white.is-active {
-    background: #2FA3E4; }
+    background: #2FA3E4;
+    border-color: #2FA3E4; }
 
 .is-color-red {
   color: #DA4141; }
@@ -6765,5 +6766,9 @@ div#card {
   div#card .columns {
     margin-top: 0;
     margin-bottom: 0; }
+
+.backForLabel {
+  fill: #fff;
+  opacity: 0.8; }
 
 /*# sourceMappingURL=main.css.map */

@@ -31,6 +31,7 @@ a{
   @include is-($color-black);
   &.is-active{
     background: $color-blue;
+    border-color: $color-blue ;
   }
 }
 .is-color-red {
@@ -107,4 +108,9 @@ div#card {
     margin-bottom: 0;
   }
 
+}
+
+.backForLabel {
+  fill: #fff;
+  opacity: 0.8
 }

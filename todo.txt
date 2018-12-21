@@ -4,7 +4,24 @@
 20.12 - связи клонов, слайдеры-гистограмы, фильтры-пресеты
 21.12 - лэйблы в две строки и вёрстка фильтров
 
-многострочные лэйблы
-иерархия лобби на карточке
+21.12.2018
+
 связи клонов
 фильтры-пресеты
+многострочные лэйблы
+иерархия лобби на карточке
+
+
+шевеления:
+var force = d3.forceSimulation()
+        .nodes(nodes.sort((a,b)=>a.cluster-b.cluster))
+        .force('collide', collide)
+        .force('cluster', clustering)
+        .force('x',forceX.strength(0.1))
+        .force('y',forceY.strength(0.1))
+        .force('collide2', d3.forceCollide(d => d.r+2 ).strength(0.8).iterations(2))
+        .alphaTarget(0.03)
+        .on("tick", tick)
+
+clustering 0.1
+collide 0.03

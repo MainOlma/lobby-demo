@@ -1,5 +1,4 @@
 function showCard(e) {
-    drawCloneLinks(e)
     var card=d3.select("#card"),          //container
         photo=card.select("#photo > img"),
         fullname=card.select("#fullname"),

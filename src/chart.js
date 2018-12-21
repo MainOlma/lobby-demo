@@ -104,8 +104,8 @@ function doSomething() {
 
     var width = 1200,
         height = 1000,
-        padding = 10, // separation between same-color nodes
-        clusterPadding = 30, // separation between different-color nodes
+        padding = 2, // separation between same-color nodes
+        clusterPadding = 15, // separation between different-color nodes
         maxRadius = 10;
 
 
@@ -114,7 +114,7 @@ function doSomething() {
 
     var color = d3.scaleOrdinal()
         .domain(['Единая Россия','ЛДПР','КПРФ','Справедливая Россия'])
-        .range(['#50A2FE','#7ACBF9','#E38889','#FEA247'])
+        .range(['#50A2FE','#F2B600','#DA4141','#FF7A00'])
         .unknown("#ababab")
 
     var colorTest = d3.scaleSequential(d3.interpolateRainbow) //rainbow nodes
@@ -317,23 +317,24 @@ function doSomething() {
     var force = d3.forceSimulation()
         .nodes(nodes.sort((a,b)=>a.cluster-b.cluster))
         //.force('center', d3.forceCenter(width / 2, height / 2))
-        //.force("gravity", d3.forceManyBody(-10).distanceMax(20))
+        //.force("gravity", d3.forceManyBody(-2))
         //.force("x", d3.forceX().strength(0.2))
         //.force("y", d3.forceY().strength(0.2))
         .force('collide', collide)
         .force('cluster', clustering)
+        //.force('collide2', d3.forceCollide(d => d.r+2 ).strength(0.5))
         .force('x',forceX.strength(0.1))
         .force('y',forceY.strength(0.1))
-        .force('collide2', d3.forceCollide(d => d.r+2 ).strength(0.8).iterations(2))
+
         //.alpha(1)
         //.velocityDecay(1)
-        .alphaTarget(0.03)
-        //.alphaDecay(0.03)
+        //.alphaTarget(0.03)
+        .alphaDecay(0.05)
         .on("tick", tick)
 
     var label_force=d3.forceSimulation()
         .nodes(clearClusters.filter(x=>x.count>10))
-        .force("gravity1", d3.forceManyBody(-140).distanceMax(100).distanceMin(0))
+        .force("gravity1", d3.forceManyBody(-10).distanceMax(80).distanceMin(0))
         //.force("gravity2", d3.forceManyBody(100).distanceMax(100).distanceMin(100))
         .on("tick", tick2)
 
@@ -364,16 +365,9 @@ function doSomething() {
         .attr("x", d => d.x)
         .attr("y", d => d.y)
         .attr("transform",d=>"translate("+d.x+" "+ d.y+")")
-        //.append('text')
-        //.attr("pointer-events","none")
+        .attr("pointer-events","none")
         .attr("text-anchor","middle")
-        //.text(d=>d.clusterName)
         .each(makeText)
-
-        //.attr('stroke', 'black')
-        //.attr('stroke-width', 0.6)
-        //.on('mouseover', overLabel)
-        //.on('mouseout', outLabel)
         .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
@@ -382,7 +376,7 @@ function doSomething() {
 
 
     function makeText(d) {
-        d3.select(this).append("text").text(d.clusterName).each(makeBack)
+        d3.select(this).append("text").text(d.clusterName).each(wrapText).each(makeBack)
     }
 
     function makeBack() {
@@ -399,9 +393,30 @@ function doSomething() {
             .attr("class", "backForLabel")
     }
 
+    function wrapText() {
+        var text = d3.select(this),
+            width = 50,
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineHeight = 1,
+            tspan = text.text(null).attr("y",-words.length/2+'em')
+
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan").attr("x", 0).attr("dy",  lineHeight + "em").text(word);
+            }
+        }
+    }
+
 
     function dragstarted(d) {
-        if (!d3.event.active) force.alphaTarget(.03).restart();
+        if (!d3.event.active) force.restart();
         d.fx = d.x;
         d.fy = d.y;
     }
@@ -412,7 +427,7 @@ function doSomething() {
     }
 
     function dragended(d) {
-        if (!d3.event.active) force.alphaTarget(.03);
+        //if (!d3.event.active) force.alphaTarget(.03);
         d.fx = null;
         d.fy = null;
     }
@@ -459,8 +474,8 @@ function doSomething() {
     }
     function tick2() {
         labels
-            .attr('x', d => d.x)
-            .attr('y', d => d.y)
+            //.attr('x', d => d.x)
+            //.attr('y', d => d.y)
             .attr("transform",d=>"translate("+d.x+" "+ d.y+")");
     }
 
@@ -475,8 +490,8 @@ function doSomething() {
             const r = d.r + cluster.r;
 
             if (l !== r) {
-                l = ((l - r) / l) * 0.1;
-                d.x -= x *= l;
+                l = ((l - r) / l) * alpha;
+                d.x -= x *= l;//d.x=d.x-x*l
                 d.y -= y *= l;
                 cluster.x += x;
                 cluster.y += y;
@@ -485,25 +500,26 @@ function doSomething() {
     }
 
     function collide(alpha) {
-        const quadtree = d3.quadtree()
-            .x(d => d.x)
-            .y(d => d.y)
-            .addAll(nodes2);
+        var quadtree = d3.quadtree()
+            .x((d) => d.x)
+            .y((d) => d.y)
+            .addAll(nodes);
 
-        nodes2.forEach((d) => {
-            const r = d.r + maxRadius + Math.max(padding, clusterPadding);
-            const nx1 = d.x - r;
-            const nx2 = d.x + r;
-            const ny1 = d.y - r;
-            const ny2 = d.y + r;
-            quadtree.visit((quad, x1, y1, x2, y2) => {
+        nodes.forEach(function(d) {
+            var r = d.r  + Math.max(padding, clusterPadding),
+                nx1 = d.x - r,
+                nx2 = d.x + r,
+                ny1 = d.y - r,
+                ny2 = d.y + r;
+            quadtree.visit(function(quad, x1, y1, x2, y2) {
+
                 if (quad.data && (quad.data !== d)) {
-                    let x = d.x - quad.data.x;
-                    let y = d.y - quad.data.y;
-                    let l = Math.sqrt((x * x) + (y * y));
-                    const r = d.r + quad.data.r + (d.cluster === quad.data.cluster ? padding : clusterPadding);
+                    var x = d.x - quad.data.x,
+                        y = d.y - quad.data.y,
+                        l = Math.sqrt(x * x + y * y),
+                        r = d.r + quad.data.r + (d.cluster === quad.data.cluster ? padding : clusterPadding);
                     if (l < r) {
-                        l = ((l - r) / l) * 0.03;
+                        l = (l - r) / l * 0.5;
                         d.x -= x *= l;
                         d.y -= y *= l;
                         quad.data.x += x;
@@ -552,9 +568,7 @@ function doSomething() {
                 value:1
             }
         })
-        console.log(arr)
         links = arr.map(d => Object.create(d));
-        console.log(links)
         svg.select("g.links").remove()
         link = svg.insert("g",":first-child").classed("links",true)
             .attr("stroke", "#999")
@@ -562,18 +576,22 @@ function doSomething() {
             .data(links)
             .enter().append("line")
             .attr("stroke-width", d => Math.sqrt(d.value));
-        /*link = svg.append('g').classed("links",true)
-            .datum(clones)
-            .selectAll('.link')
-            .data(d => d)
-            .enter().append('line')
-            .attr('x1', target.x)
-            .attr('y1', target.y)
-            .attr("x2", d => d.x)
-            .attr("y2", d => d.y)
-            .attr("stroke","black")*/
 
+        force.force("link", d3.forceLink(links).id(d => d.uniq).strength(0))
+        if (force.alpha() <= 0.01){
+            force.restart()
             force.force("link", d3.forceLink(links).id(d => d.uniq).strength(0))
+            /*link = svg.append('g').classed("links",true)
+                .datum(clones)
+                .selectAll('.link')
+                .data(d => d)
+                .enter().append('line')
+                .attr('x1', target.x)
+                .attr('y1', target.y)
+                .attr("x2", d => d.x)
+                .attr("y2", d => d.y)
+                .attr("stroke","black")*/
+        }
     }
 
     /*
