@@ -1,27 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Poiret+One');
-a, a:visited, a:active {
-  color: #444;
-}
+
+
 
 .container {
   max-width: 900px;
   margin: auto;
 }
 
-.button {
-  min-width: 130px;
-  padding: 4px 5px;
-  cursor: pointer;
-  text-align: center;
-  font-size: 13px;
-  border: 1px solid #e0e0e0;
-  text-decoration: none;
-}
 
-.button.active {
-  background: #000;
-  color: #fff;
-}
 
 
 #vis {
@@ -90,8 +76,8 @@ svg text.title{ font-family: 'Poiret One', cursive; font-size: 40px;text-transfo
 .backForLabel {
     fill: #fff;
     opacity: 0.5}
-div#controls{position: fixed;top:0;}
-div#controls select {width: 152px;}
+
+
 
 div.convocations{width: 152px}
 

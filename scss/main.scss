@@ -1,0 +1,99 @@
+@charset "utf-8";
+@import "bulma/bulma.sass";
+@import "vars.scss";
+
+body{
+  background: $color-white;
+}
+
+header{
+  background: $color-blue;
+  color: $color-white;
+
+  h1{
+    font-size: 44px;
+  }
+}
+
+a{
+  text-decoration: underline;
+}
+
+@mixin is-($color){
+  color: $color;
+}
+.is-color-red {
+  @include is-($color-red)
+}
+.is-color-blue {
+  @include is-($color-blue)
+}
+.is-color-orange {
+  @include is-($color-orange)
+}
+.is-color-yellow {
+  @include is-($color-yellow)
+}
+div#controls{
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+
+  select {width: 152px;}
+}
+
+
+div#card {
+  font-family: Arial;
+  font-size: $font-size-m;
+  line-height: 21px;
+  top: 0;
+  right: 0;
+  left: auto;
+  width: 506px;
+  height: 100%;
+  background:#F4F4F4;
+  padding: 32px;
+  overflow: auto;
+
+  &.is-active{
+    display: block;
+  }
+
+  h1 {
+    font-size: $font-size-h1;
+    line-height: 28px;
+    font-weight: bold;
+  }
+
+  h2 {
+    margin-top: $offset-l;
+    font-weight: bold;
+    line-height: 1.75rem;
+  }
+
+  span#fraction{
+    color: $color-gray;
+    &.er{color: $color-blue;}
+    &.kprf{color: $color-red;}
+    &.ldpr{color: $color-yellow;}
+    &.sr{color: $color-orange;}
+  }
+
+  .law_count{
+    font-size: 56px;
+    line-height: 57px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .law_text{
+    line-height: 21px;
+  }
+
+  .columns{
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+}
