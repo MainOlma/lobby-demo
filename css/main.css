@@ -6717,12 +6717,8 @@ a {
     border-color: #F2B600;
     color: #ffffff; }
 
-div#controls {
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0; }
-  div#controls select {
-    width: 152px; }
+div#controls select {
+  width: 152px; }
 
 div#card {
   font-family: Arial;
@@ -6770,5 +6766,18 @@ div#card {
 .backForLabel {
   fill: #fff;
   opacity: 0.8; }
+
+circle:hover {
+  cursor: pointer; }
+
+.lobby_label {
+  text-anchor: middle;
+  pointer-events: none;
+  transition: 0.5s opacity 0.5s; }
+  .lobby_label > * {
+    pointer-events: none; }
+  .lobby_label.hovered {
+    opacity: 0.0 !important;
+    transition: 0.5s opacity 0s; }
 
 /*# sourceMappingURL=main.css.map */

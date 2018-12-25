@@ -245,8 +245,8 @@ function doSomething() {
                 curr.col = 1
                 break;
             default:
-                curr.row =9
-                curr.col = 9
+                curr.row =11
+                curr.col = 4
 
         }
 
@@ -313,29 +313,24 @@ function doSomething() {
 
     var links
 
-
+    var first_end=0
     var force = d3.forceSimulation()
         .nodes(nodes.sort((a,b)=>a.cluster-b.cluster))
-        //.force('center', d3.forceCenter(width / 2, height / 2))
-        //.force("gravity", d3.forceManyBody(-2))
-        //.force("x", d3.forceX().strength(0.2))
-        //.force("y", d3.forceY().strength(0.2))
         .force('collide', collide)
         .force('cluster', clustering)
-        //.force('collide2', d3.forceCollide(d => d.r+2 ).strength(0.5))
         .force('x',forceX.strength(0.1))
         .force('y',forceY.strength(0.1))
-
-        //.alpha(1)
-        //.velocityDecay(1)
-        //.alphaTarget(0.03)
         .alphaDecay(0.05)
         .on("tick", tick)
+        .on("end", function (){
+            if (first_end==0) label_force.alpha(1).restart()
+            first_end=1
+        });
 
     var label_force=d3.forceSimulation()
         .nodes(clearClusters.filter(x=>x.count>10))
-        .force("gravity1", d3.forceManyBody(-10).distanceMax(80).distanceMin(0))
-        //.force("gravity2", d3.forceManyBody(100).distanceMax(100).distanceMin(100))
+        .force("gravity1", d3.forceManyBody(-10).distanceMax(50).distanceMin(0))
+        .alpha(0)
         .on("tick", tick2)
 
     const circles = svg.append('g')
@@ -356,7 +351,8 @@ function doSomething() {
             .on("end", dragended));
 
     const labels = svg.append('g')
-        .datum(clearClusters.filter(x=>x.count>10))
+        //.datum(ShowedClusters(clearClusters))
+        .datum(clearClusters)
         .selectAll('.g')
         .data(d => d)
         .enter().append("g")
@@ -365,14 +361,23 @@ function doSomething() {
         .attr("x", d => d.x)
         .attr("y", d => d.y)
         .attr("transform",d=>"translate("+d.x+" "+ d.y+")")
-        .attr("pointer-events","none")
-        .attr("text-anchor","middle")
         .each(makeText)
-        .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended));
 
+    function ShowedClusters(clusters) {
+        //first five largest in each group
+        var groups= [7624, 7667, 7753, 7801, 7813, null]
+        var showedClustersNumbers=[]
+        var showedClusters=[]
+        groups.forEach(group=>{
+            showedClustersNumbers+=clusters
+                .filter(x=>x.clusterParent==group)
+                .sort((a,b)=>b.count-a.count)
+                .slice(0,5)
+                .map(x=>x.cluster)
+        })
+        showedClusters=clusters.filter(x=>showedClustersNumbers.includes(x.cluster))
+        return showedClusters
+    }
 
 
     function makeText(d) {
@@ -396,7 +401,7 @@ function doSomething() {
     function wrapText() {
         var text = d3.select(this),
             width = 50,
-            words = text.text().split(/\s+/).reverse(),
+            words = text.text().split(/\s+/).slice(0,3).reverse(),
             word,
             line = [],
             lineHeight = 1,
@@ -416,7 +421,7 @@ function doSomething() {
 
 
     function dragstarted(d) {
-        if (!d3.event.active) force.restart();
+        if (!d3.event.active) force.alphaTarget(0.03).restart();
         d.fx = d.x;
         d.fy = d.y;
     }
@@ -427,7 +432,7 @@ function doSomething() {
     }
 
     function dragended(d) {
-        //if (!d3.event.active) force.alphaTarget(.03);
+        if (!d3.event.active) force.alphaTarget(0);
         d.fx = null;
         d.fy = null;
     }
@@ -462,6 +467,7 @@ function doSomething() {
         circles
             .attr('cx', d => d.x)
             .attr('cy', d => d.y);
+        labels.attr("transform",d=>"translate("+d.x+" "+ d.y+")");
         if (links) {
         link
             .attr("x1", d => d.source.x)
@@ -470,7 +476,7 @@ function doSomething() {
             .attr("y2", d => d.target.y);}
 
 
-        label_force.alphaTarget(1).restart();
+         //if (force.alpha()>=0.1) label_force.alpha(0.1).restart();
     }
     function tick2() {
         labels
@@ -531,12 +537,25 @@ function doSomething() {
         });
     }
 
+    function hideLabel(d) {
+
+        var i=d.cluster
+        console.log(labels.filter(x=>x.cluster==i))
+
+        labels.filter(x=>x.cluster==i).classed("hovered",true)
+    }
+
+    function showLabel(d) {
+        labels.classed("hovered",false)
+    }
+
 
     /*
 * Function called on mouseover to display the
 * details of a bubble in the tooltip.
 */
     function showDetail(d) {
+        hideLabel(d)
         drawCloneLinks(d)
         //circles.style("opacity",1).transition().attr("fill", d=>d.color)
         //labels.transition().style("opacity",1)
@@ -603,6 +622,7 @@ function doSomething() {
 
         //d3.select(this).attr('stroke', d3.rgb(color(d.cluster / 10)).darker());
         tooltip.hideTooltip();
+        showLabel()
     }
 
     function overLabel(d) {
@@ -823,10 +843,15 @@ function doSomething() {
 
         function hightlightOn(spot) {
             circles.transition().attr("fill", d=>d.color).style("opacity",0.3)
-            labels.transition().style("opacity",0.3)
+            labels.transition().style("opacity",0.0)
 
             var circles_clusters=spot.data().map(s=>s.cluster)
+
+            var temp=clearClusters.filter(x=>circles_clusters.includes(x.cluster))
+            var temp2=ShowedClusters(temp).map(s=>s.cluster)
+
             var labels_spot=labels.filter(x=>circles_clusters.includes(x.cluster))
+            labels_spot=labels.filter(x=>temp2.includes(x.cluster))
 
             spot.transition().style("opacity",1)
             labels_spot.transition().style("opacity",1)
@@ -837,7 +862,8 @@ function doSomething() {
             d3.selectAll("#controls button").classed("is-active",false)
             d3.selectAll("select").property("selectedIndex", 0)
             circles.transition().attr("fill", d=>d.color).style("opacity",1)
-            labels.transition().style("opacity",1)
+            var n = ShowedClusters(clearClusters).map(x=>x.cluster)
+            labels.style("opacity",0).filter(x=>n.includes(x.cluster)).transition().style("opacity",1)
         }
 
     }
