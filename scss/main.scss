@@ -1,6 +1,7 @@
 @charset "utf-8";
-@import "bulma/bulma.sass";
 @import "vars.scss";
+@import "bulma/bulma.sass";
+
 @import "fonts.scss";
 
 html{overflow-y: auto;}
@@ -189,6 +190,39 @@ div#card {
     }
   }
 
+}
+
+.footer{
+  background: inherit;
+  padding: 0;
+  font-size: 16px;
+
+  .icon{
+    opacity: 1;
+    color: $color-white;
+  }
+
+  .copy{
+    opacity: 0.3;
+  }
+
+  .social{
+    display: flex;
+    align-items: self-start;
+    font-size: 24px;
+
+  a{
+    background: #0f81cc;
+    width: 39px;
+    height: 39px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    &.vk{background-color: #4C77A6;}
+    &.fb{background-color: #435695;}
+    &.tw{background-color: #1FB8EA;}
+  }
+  }
 }
 
 .backForLabel {

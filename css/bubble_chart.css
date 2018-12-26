@@ -2,14 +2,6 @@
 
 
 
-.container {
-  max-width: 900px;
-  margin: auto;
-}
-
-
-
-
 #vis {
   width: 940px;
   height: 600px;
@@ -49,10 +41,6 @@
 
 .tooltip .name {
   font-weight:bold;
-}
-
-.footer {
-  text-align: center;
 }
 
 .hidden{

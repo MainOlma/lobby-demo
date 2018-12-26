@@ -176,12 +176,14 @@ function doSomething() {
     nodes.sort(function(a, b) { return a.clusterParent - b.clusterParent; })
 
     var clientWidth=document.documentElement.clientWidth
+    if (clientWidth>=1112) clientWidth=1112
+    var clientHeight= (clientWidth<750) ? 400 : height
 
     const margin = {top: 100, right: 100, bottom: 100, left: 100};
 
     const svg = d3.select('#clusters')
         .append('svg')
-        .attr('height', height)
+        .attr('height', clientHeight)
         .attr('width', clientWidth)
         .append('g')
 
@@ -278,7 +280,7 @@ function doSomething() {
                 break;
             case 7753://отраслевое
                 curr.row =2
-                curr.col = 7
+                curr.col = 7.5
                 break;
             case 7801://общ-полит
                 curr.row =17
@@ -356,6 +358,12 @@ function doSomething() {
     var links
 
     var first_end=0
+
+    if (clientWidth<=750) {
+        nodes = nodes.filter(x => x.clusterParent == '7753')
+        clearClusters=clearClusters.filter(x => x.clusterParent == '7753')
+    }
+
     var force = d3.forceSimulation()
         .nodes(nodes.sort((a,b)=>a.cluster-b.cluster))
         .force('collide', collide)
