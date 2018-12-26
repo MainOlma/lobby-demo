@@ -114,8 +114,9 @@ function doSomething() {
 
     var color = d3.scaleOrdinal()
         .domain(['Единая Россия','ЛДПР','КПРФ','Справедливая Россия'])
-        .range(['#50A2FE','#F2B600','#DA4141','#FF7A00'])
-        .unknown("#ababab")
+        //.range(['#50A2FE','#F2B600','#DA4141','#FF7A00'])
+        .range(['is-color-er','is-color-yellow','is-color-red','is-color-orange'])
+        .unknown('is-color-gray')
 
     var colorTest = d3.scaleSequential(d3.interpolateRainbow) //rainbow nodes
         .domain(d3.range(m));
@@ -339,7 +340,8 @@ function doSomething() {
         .data(d => d)
         .enter().append('circle')
         .attr('r', d => d.r)
-        .attr('fill', d=>d.color)
+        //.attr('fill', d=>d.color)
+        .attr('class',d=>d.color)
         .attr("cx", d => d.dx)
         .attr("cy", d => d.dy)
         .on('mouseover', showDetail)
@@ -357,7 +359,7 @@ function doSomething() {
         .data(d => d)
         .enter().append("g")
         .attr('class', "lobby_label")
-        .attr('fill', d => d3.rgb(d.color).darker())
+        //.attr('fill', d => d3.rgb(d.color).darker())
         .attr("x", d => d.x)
         .attr("y", d => d.y)
         .attr("transform",d=>"translate("+d.x+" "+ d.y+")")
@@ -406,6 +408,7 @@ function doSomething() {
             line = [],
             lineHeight = 1,
             tspan = text.text(null).attr("y",-words.length/2+'em')
+
 
         while (word = words.pop()) {
             line.push(word);
@@ -572,8 +575,7 @@ function doSomething() {
         var content =
             '<span class="name">'+d.name+' </span><br/>' +
             '<span class="value">' +d.fraction+'</span><br/>' +
-            '<span class="value">'+groupname.name+' '+d.cluster+'</span><br/>' +
-            '<span class="name">ID: </span><span class="value">' + d.id + '</span>';
+            '<span class="value">'+groupname.name+'</span><br/>';
 
         tooltip.showTooltip(content, d3.event);
     }
@@ -842,7 +844,7 @@ function doSomething() {
         }
 
         function hightlightOn(spot) {
-            circles.transition().attr("fill", d=>d.color).style("opacity",0.3)
+            circles.transition().attr("class", d=>d.color).style("opacity",0.3)
             labels.transition().style("opacity",0.0)
 
             var circles_clusters=spot.data().map(s=>s.cluster)
@@ -861,7 +863,7 @@ function doSomething() {
             d3.selectAll("#search").property("value","")
             d3.selectAll("#controls button").classed("is-active",false)
             d3.selectAll("select").property("selectedIndex", 0)
-            circles.transition().attr("fill", d=>d.color).style("opacity",1)
+            circles.transition().attr("class", d=>d.color).style("opacity",1)
             var n = ShowedClusters(clearClusters).map(x=>x.cluster)
             labels.style("opacity",0).filter(x=>n.includes(x.cluster)).transition().style("opacity",1)
         }

@@ -1,17 +1,38 @@
 @charset "utf-8";
 @import "bulma/bulma.sass";
 @import "vars.scss";
-
+@import "fonts.scss";
+html{overflow-y: auto;}
 body{
   background: $color-white;
+  font-family: "HeliosCondRegular";
 }
 
-header{
+header {
   background: $color-blue;
   color: $color-white;
-
-  h1{
-    font-size: 44px;
+  .c1 {
+    flex: 0 0 419px;
+    h1 {
+      font-size: 44px;
+      text-transform: uppercase;
+      font-family: "HeliosCondBold";
+    }
+  }
+  .c2 {
+    flex: 0 0 223px;
+  }
+  .c4, .c5, .c6 {
+    flex: 0 0 78px;
+  }
+  .c4 {
+    color: #4C77A6;
+  }
+  .c5 {
+    color: #1FB8EA;
+  }
+  .c6 {
+    color: #435695;
   }
 }
 
@@ -21,6 +42,7 @@ a{
 
 @mixin is-($color){
   color: $color;
+  fill:$color;
   &.is-active{
     background: $color;
     border-color: $color;
@@ -40,11 +62,17 @@ a{
 .is-color-blue {
   @include is-($color-blue)
 }
+.is-color-er {
+  @include is-($color-er)
+}
 .is-color-orange {
   @include is-($color-orange)
 }
 .is-color-yellow {
-  @include is-($color-yellow)
+   @include is-($color-yellow)
+ }
+.is-color-gray {
+  @include is-($color-gray)
 }
 div#controls{
   //position: sticky;
@@ -112,18 +140,19 @@ div#card {
 
 .backForLabel {
   fill: #fff;
-  opacity: 0.8
+  opacity: 0.0;
 }
 circle:hover {cursor:pointer;}
 .lobby_label{
+  fill:#000;
   text-anchor: middle;
   pointer-events: none;
-  transition: 0.5s opacity 0.5s;
+  transition: 0.0s opacity 0.05s;
   & > *{
     pointer-events: none;
   }
   &.hovered {
     opacity: 0.0 !important;
-    transition: 0.5s opacity 0s;
+    //transition: 0.1s opacity 0s;
   }
 }

@@ -6667,20 +6667,63 @@ label.panel-block {
   background-color: #fafafa;
   padding: 3rem 1.5rem 6rem; }
 
+@font-face {
+  font-family: "HeliosCondRegular";
+  src: url("../fonts/HeliosCondRegular/HeliosCondRegular.eot");
+  src: url("../fonts/HeliosCondRegular/HeliosCondRegular.eot?#iefix") format("embedded-opentype"), url("../fonts/HeliosCondRegular/HeliosCondRegular.woff") format("woff"), url("../fonts/HeliosCondRegular/HeliosCondRegular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal; }
+@font-face {
+  font-family: "HeliosCondItalic";
+  src: url("../fonts/HeliosCondItalic/HeliosCondItalic.eot");
+  src: url("../fonts/HeliosCondItalic/HeliosCondItalic.eot?#iefix") format("embedded-opentype"), url("../fonts/HeliosCondItalic/HeliosCondItalic.woff") format("woff"), url("../fonts/HeliosCondItalic/HeliosCondItalic.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal; }
+@font-face {
+  font-family: "HeliosCondBold";
+  src: url("../fonts/HeliosCondBold/HeliosCondBold.eot");
+  src: url("../fonts/HeliosCondBold/HeliosCondBold.eot?#iefix") format("embedded-opentype"), url("../fonts/HeliosCondBold/HeliosCondBold.woff") format("woff"), url("../fonts/HeliosCondBold/HeliosCondBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal; }
+@font-face {
+  font-family: "HeliosCondBoldItalic";
+  src: url("../fonts/HeliosCondBoldItalic/HeliosCondBoldItalic.eot");
+  src: url("../fonts/HeliosCondBoldItalic/HeliosCondBoldItalic.eot?#iefix") format("embedded-opentype"), url("../fonts/HeliosCondBoldItalic/HeliosCondBoldItalic.woff") format("woff"), url("../fonts/HeliosCondBoldItalic/HeliosCondBoldItalic.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal; }
+html {
+  overflow-y: auto; }
+
 body {
-  background: #ffffff; }
+  background: #ffffff;
+  font-family: "HeliosCondRegular"; }
 
 header {
   background: #2FA3E4;
   color: #ffffff; }
-  header h1 {
-    font-size: 44px; }
+  header .c1 {
+    flex: 0 0 419px; }
+    header .c1 h1 {
+      font-size: 44px;
+      text-transform: uppercase;
+      font-family: "HeliosCondBold"; }
+  header .c2 {
+    flex: 0 0 223px; }
+  header .c4, header .c5, header .c6 {
+    flex: 0 0 78px; }
+  header .c4 {
+    color: #4C77A6; }
+  header .c5 {
+    color: #1FB8EA; }
+  header .c6 {
+    color: #435695; }
 
 a {
   text-decoration: underline; }
 
 .is-color-white {
-  color: #000000; }
+  color: #000000;
+  fill: #000000; }
   .is-color-white.is-active {
     background: #000000;
     border-color: #000000;
@@ -6690,31 +6733,51 @@ a {
     border-color: #2FA3E4; }
 
 .is-color-red {
-  color: #DA4141; }
+  color: #DA4141;
+  fill: #DA4141; }
   .is-color-red.is-active {
     background: #DA4141;
     border-color: #DA4141;
     color: #ffffff; }
 
 .is-color-blue {
-  color: #2FA3E4; }
+  color: #2FA3E4;
+  fill: #2FA3E4; }
   .is-color-blue.is-active {
     background: #2FA3E4;
     border-color: #2FA3E4;
     color: #ffffff; }
 
+.is-color-er {
+  color: #50A2FE;
+  fill: #50A2FE; }
+  .is-color-er.is-active {
+    background: #50A2FE;
+    border-color: #50A2FE;
+    color: #ffffff; }
+
 .is-color-orange {
-  color: #FF7A00; }
+  color: #FF7A00;
+  fill: #FF7A00; }
   .is-color-orange.is-active {
     background: #FF7A00;
     border-color: #FF7A00;
     color: #ffffff; }
 
 .is-color-yellow {
-  color: #F2B600; }
+  color: #F2B600;
+  fill: #F2B600; }
   .is-color-yellow.is-active {
     background: #F2B600;
     border-color: #F2B600;
+    color: #ffffff; }
+
+.is-color-gray {
+  color: #C4C4C4;
+  fill: #C4C4C4; }
+  .is-color-gray.is-active {
+    background: #C4C4C4;
+    border-color: #C4C4C4;
     color: #ffffff; }
 
 div#controls select {
@@ -6765,19 +6828,19 @@ div#card {
 
 .backForLabel {
   fill: #fff;
-  opacity: 0.8; }
+  opacity: 0.0; }
 
 circle:hover {
   cursor: pointer; }
 
 .lobby_label {
+  fill: #000;
   text-anchor: middle;
   pointer-events: none;
-  transition: 0.5s opacity 0.5s; }
+  transition: 0.0s opacity 0.0s; }
   .lobby_label > * {
     pointer-events: none; }
   .lobby_label.hovered {
-    opacity: 0.0 !important;
-    transition: 0.5s opacity 0s; }
+    opacity: 0.0 !important; }
 
 /*# sourceMappingURL=main.css.map */
