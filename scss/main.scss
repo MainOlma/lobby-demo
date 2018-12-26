@@ -2,7 +2,9 @@
 @import "bulma/bulma.sass";
 @import "vars.scss";
 @import "fonts.scss";
+
 html{overflow-y: auto;}
+
 body{
   background: $color-white;
   font-family: "HeliosCondRegular";
