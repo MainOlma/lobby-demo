@@ -6837,7 +6837,7 @@ circle:hover {
   fill: #000;
   text-anchor: middle;
   pointer-events: none;
-  transition: 0.0s opacity 0.0s; }
+  transition: 0.0s opacity 0.05s; }
   .lobby_label > * {
     pointer-events: none; }
   .lobby_label.hovered {
