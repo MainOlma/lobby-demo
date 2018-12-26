@@ -60,7 +60,7 @@
                 </div>
                 <div class="control"></div>
                 <div class="control has-icons-right ">
-                    <input class="input is-small" type="text" id="search" name="q" placeholder="Роскомнадзор, Жириновский"
+                    <input class="input is-small" type="text" id="search" name="q" placeholder="Жириновский"
                            size="25">
                     <span class="icon is-small is-right">
                     <i class="fas fa-search"></i>
@@ -87,14 +87,14 @@
 
 
         </div>
-    <div class="columns">
-<div class="column">
+
+
         <div id="clusters"></div>
-    </div>
-        <div class="column">
+
+
         <div id="card" class="modal">
             <div>
-                <button class="modal-close fas fa-times" aria-label="close"></button>
+                <button class="fas fa-times" aria-label="close"></button>
             </div>
             <div class="columns">
                 <div class="column is-4" id="photo"><div class="image-cropper"><img width="128" height="128"></div></div>
@@ -102,10 +102,10 @@
                     <h1 id="fullname"></h1></div>
             </div>
             <div id="position"></div>
-            <div class="columns is-vcentered" id="laws">
-                <div class="column law_count is-2" id="law_number_vnes"></div>
-                <div class="column law_text is-3">законов <br> выдвинуто</div>
-                <div class="column law_count is-2" id="law_number_podpis"></div>
+            <div class="columns is-vcentered is-mobile" id="laws">
+                <div class="column law_count is-2 is-4-mobile" id="law_number_vnes"></div>
+                <div class="column law_text is-3 is-4-mobile">законов <br> выдвинуто</div>
+                <div class="column law_count is-2 is-4-mobile" id="law_number_podpis"></div>
                 <div class="column law_text">из них приняты <br> в среднем за <span id="sred_day"></span> дней</div>
             </div>
             <div id="lobby"></div>
@@ -116,8 +116,8 @@
             <h2>Аффиляция и связи</h2>
             <div id="relations"></div>
         </div>
-    </div>
-</div>
+
+
 
     <div class="footer"></div>
 </div>

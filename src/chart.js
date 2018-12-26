@@ -58,6 +58,10 @@ function dataDepMap(rawdata) {
         groups = d.groups
         groups.length==0 ? groups=[7917] : groups // кто без групп? -> в группу "Не выявлено"
         var rating=Math.floor(Math.random() * (10-4))+4
+        rating=GetRating(d.person)
+        rating=rating.podpis/rating.vnes*10
+        if (rating<4 || !rating) rating=4
+        console.log(rating)
         return groups.map((b) => {
             myGroups.add(b)
             /*the set provide unique values of lobby groups*/
@@ -171,12 +175,14 @@ function doSomething() {
     nodes.sort(function(a, b) { return b.count - a.count; })
     nodes.sort(function(a, b) { return a.clusterParent - b.clusterParent; })
 
+    var clientWidth=document.documentElement.clientWidth
+
     const margin = {top: 100, right: 100, bottom: 100, left: 100};
 
     const svg = d3.select('#clusters')
         .append('svg')
         .attr('height', height)
-        .attr('width', width)
+        .attr('width', clientWidth)
         .append('g')
 
 
@@ -193,7 +199,7 @@ function doSomething() {
     var columnsTotal=9
     var xScale = d3.scaleLinear()
         .domain([0, columnsTotal-1])
-        .range([100, width-200]);
+        .range([80, clientWidth-200]);
 
     var yScale = d3.scaleLinear()
         .domain([0, 15])
@@ -222,8 +228,15 @@ function doSomething() {
             }
         }*/
 
-        curr = el
 
+        (clientWidth<=750) ? GetCoordinatesForMobile(el) : GetCoordinatesForDesktop(el)
+
+
+    })
+    makeEncloses()
+
+    function GetCoordinatesForDesktop(element) {
+        var curr = element
         switch (curr.clusterParent) {
             case 7624://федеральное
                 curr.row =2
@@ -248,11 +261,39 @@ function doSomething() {
             default:
                 curr.row =11
                 curr.col = 4
-
         }
+        return element
+    }
 
-    })
-    makeEncloses()
+    function GetCoordinatesForMobile(element) {
+        var curr = element
+        switch (curr.clusterParent) {
+            case 7624://федеральное
+                curr.row =7
+                curr.col = 7
+                break;
+            case 7667://региональное
+                curr.row =12
+                curr.col = 8
+                break;
+            case 7753://отраслевое
+                curr.row =2
+                curr.col = 7
+                break;
+            case 7801://общ-полит
+                curr.row =17
+                curr.col = 8
+                break;
+            case 7813://фин-пром группы
+                curr.row =22
+                curr.col = 7
+                break;
+            default:
+                curr.row =27
+                curr.col = 8
+        }
+        return element
+    }
 
     function makeEncloses() {
         svg.append("g").attr("class", "encloses")

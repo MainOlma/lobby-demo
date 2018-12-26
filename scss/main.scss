@@ -8,6 +8,8 @@ html{overflow-y: auto;}
 body{
   background: $color-white;
   font-family: "HeliosCondRegular", "Helvetica Neue";
+  line-height: 1;
+  overflow: hidden;
 }
 
 header {
@@ -129,6 +131,12 @@ div#card {
   background:#F4F4F4;
   padding: 32px;
   overflow: auto;
+
+  @include until($tablet){
+    width: 100%;
+    padding: 16px;
+    position: fixed;
+  }
 
   &.is-active{
     display: block;

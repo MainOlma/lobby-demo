@@ -6696,7 +6696,9 @@ html {
 
 body {
   background: #ffffff;
-  font-family: "HeliosCondRegular", "Helvetica Neue"; }
+  font-family: "HeliosCondRegular", "Helvetica Neue";
+  line-height: 1;
+  overflow: hidden; }
 
 header {
   background: #2FA3E4;
@@ -6821,6 +6823,11 @@ div#card {
   background: #F4F4F4;
   padding: 32px;
   overflow: auto; }
+  @media screen and (max-width: 749px) {
+    div#card {
+      width: 100%;
+      padding: 16px;
+      position: fixed; } }
   div#card.is-active {
     display: block; }
   div#card h1 {
