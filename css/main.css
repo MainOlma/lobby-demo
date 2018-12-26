@@ -6701,22 +6701,48 @@ body {
 header {
   background: #2FA3E4;
   color: #ffffff; }
+  header a {
+    color: #ffffff; }
+  header .columns {
+    margin: 0 !important;
+    height: 87px; }
+    @media screen and (max-width: 749px) {
+      header .columns {
+        height: 48px; } }
+    header .columns .column {
+      display: flex;
+      align-items: center;
+      justify-content: center; }
   header .c1 {
     flex: 0 0 419px; }
     header .c1 h1 {
       font-size: 44px;
       text-transform: uppercase;
       font-family: "HeliosCondBold", "Helvetica Neue"; }
+      @media screen and (max-width: 749px) {
+        header .c1 h1 {
+          font-size: 20px; } }
+    @media screen and (max-width: 749px) {
+      header .c1 {
+        flex: 0 0 205px; } }
   header .c2 {
     flex: 0 0 223px; }
   header .c4, header .c5, header .c6 {
-    flex: 0 0 78px; }
+    height: 87px;
+    flex: 0 0 87px; }
   header .c4 {
-    color: #4C77A6; }
+    background-color: #4C77A6; }
   header .c5 {
-    color: #1FB8EA; }
+    background-color: #1FB8EA; }
   header .c6 {
-    color: #435695; }
+    background-color: #435695; }
+  header .icon {
+    color: #ffffff;
+    font-size: 24px; }
+
+@media screen and (max-width: 749px) {
+  .hero-body {
+    padding: 1rem; } }
 
 a {
   text-decoration: underline; }
@@ -6825,6 +6851,12 @@ div#card {
   div#card .columns {
     margin-top: 0;
     margin-bottom: 0; }
+  div#card .image-cropper img {
+    object-fit: cover;
+    object-position: top;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px; }
 
 .backForLabel {
   fill: #fff;

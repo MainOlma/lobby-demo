@@ -541,10 +541,7 @@ function doSomething() {
     }
 
     function hideLabel(d) {
-
         var i=d.cluster
-        console.log(labels.filter(x=>x.cluster==i))
-
         labels.filter(x=>x.cluster==i).classed("hovered",true)
     }
 
@@ -574,7 +571,6 @@ function doSomething() {
 
         var content =
             '<span class="name">'+d.name+' </span><br/>' +
-            '<span class="value">' +d.fraction+'</span><br/>' +
             '<span class="value">'+groupname.name+'</span><br/>';
 
         tooltip.showTooltip(content, d3.event);

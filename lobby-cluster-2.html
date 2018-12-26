@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
     <link rel="stylesheet" href="css/nouislider.css">
     <link rel="stylesheet" href="css/main.css">
@@ -10,32 +11,32 @@
 
 <div class="hero">
     <header class="hero-head ">
-        <div class="columns is-vcentered">
+        <div class="columns is-vcentered is-mobile">
             <div class="column c1">
                 <h1>Лоббизм в госдуме</h1>
             </div>
-            <div class="column c2">
+            <div class="column c2 is-hidden-mobile">
                 <h2>Какие депутаты служат не только народу</h2>
             </div>
-            <div class="column c3"><a href="">О проекте</a>
+            <div class="column is-pulled-right c3 "><a href="">О&nbsp;проекте</a>
             </div>
-            <div class="column is-pulled-right c4"><a href=""><span class="icon"><i class="fab fa-vk"></i></span></a>
+            <div class="column is-pulled-right c4 is-hidden-mobile"><a href=""><span class="icon"><i class="fab fa-vk"></i></span></a>
             </div>
-            <div class="column c5"><a href=""><span class="icon"><i class="fab fa-facebook-square"></i></span></a>
+            <div class="column is-pulled-right c5 is-hidden-mobile"><a href=""><span class="icon"><i class="fab fa-facebook-square"></i></span></a>
             </div>
-            <div class="column c6"><a href=""><span class="icon"><i class="fab fa-twitter"></i></span></a>
+            <div class="column is-pulled-right c6 is-hidden-mobile"><a href=""><span class="icon"><i class="fab fa-twitter"></i></span></a>
             </div>
         </div>
     </header>
     <div class="hero-body">
         <div id="controls" >
-            <div class="field is-grouped" >
+            <div class="field is-grouped is-hidden-mobile" >
                 <div class="buttons  has-addons control" id="fraction">
                     <button class="button is-small is-color-blue" value="Единая Россия">ЕР</button>
                     <button class="button is-small  is-color-red" value="КПРФ">КПРФ</button>
                     <button class="button is-small  is-color-orange" value="Справедливая Россия">СР</button>
                     <button class="button is-small  is-color-yellow" value="ЛДПР">ЛДПР</button>
-                    <button class="button is-small is-blue" value="">Вне фракции</button>
+                    <button class="button is-small is-blue" value="Вне фракций">Вне фракции</button>
                 </div>
 
                 <div class="buttons  has-addons control" id="method">
@@ -47,7 +48,7 @@
                     <select id="select_committees"></select>
                 </div>
             </div>
-            <div class="field is-grouped">
+            <div class="field is-grouped is-hidden-mobile">
                 <div class="buttons  has-addons control" id="gender">
                     <button class="button is-small is-color-white" value="M">М</button>
                     <button class="button is-small is-color-white" value="F">Ж</button>
@@ -96,7 +97,7 @@
                 <button class="modal-close fas fa-times" aria-label="close"></button>
             </div>
             <div class="columns">
-                <div class="column is-4" id="photo"><img width="128" height="128"></div>
+                <div class="column is-4" id="photo"><div class="image-cropper"><img width="128" height="128"></div></div>
                 <div class="column"><span id="fraction_text"></span><br>
                     <h1 id="fullname"></h1></div>
             </div>

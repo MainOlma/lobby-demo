@@ -1,6 +1,6 @@
 function showCard(e) {
     var card=d3.select("#card"),          //container
-        photo=card.select("#photo > img"),
+        photo=card.select("#photo img"),
         fullname=card.select("#fullname"),
         fraction=card.select("#fraction_text"),
         position=card.select("#position"),
