@@ -6696,7 +6696,7 @@ html {
 
 body {
   background: #ffffff;
-  font-family: "HeliosCondRegular"; }
+  font-family: "HeliosCondRegular", "Helvetica Neue"; }
 
 header {
   background: #2FA3E4;
@@ -6706,7 +6706,7 @@ header {
     header .c1 h1 {
       font-size: 44px;
       text-transform: uppercase;
-      font-family: "HeliosCondBold"; }
+      font-family: "HeliosCondBold", "Helvetica Neue"; }
   header .c2 {
     flex: 0 0 223px; }
   header .c4, header .c5, header .c6 {
