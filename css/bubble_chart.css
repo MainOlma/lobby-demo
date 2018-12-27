@@ -65,7 +65,7 @@ svg text.title{ font-family: 'Poiret One', cursive; font-size: 40px;text-transfo
 
 
 
-div.convocations{width: 152px}
+div.convocations{width: 152px;     margin-top: 9px;}
 
 .noUi-horizontal {
     height: 5px;
