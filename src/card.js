@@ -37,7 +37,6 @@ function showCard(e) {
 
 function GetDepData(id) {
     var deputatInfo = rawDep.find(x=>x.id==id)
-    console.log(deputatInfo)
     return deputatInfo;
 }
 
@@ -53,10 +52,23 @@ function GetFractionClass(fraction) {
 
 function GetRating(id) {
     var rating = rawRating.find(x=>x.id_declarator==id)
-    if (!rating) rating=0
-    console.log(rating)
+    var max=d3.max(rawRating.map(x=>+x.podpis/(+x.vnes+x.podpis)*10+1))
+    if (!rating) {rating=rawRating[0];rating.no=true; rating.vnes=-1; rating.podpis=-1; rating.sred_day=-1}
+
+    var domain = [1,max]
+    var range = [4,10]
+    var logScale =  d3.scaleLog().domain(domain).range(range)
+
+    var rating_initial=1
+    if (!rating.no ) rating_initial=(rating.podpis/(rating.podpis+rating.vnes))*10+1
+    if (rating.vnes<5) rating_initial=1
+    if (rating.no ) rating_initial=1
+    var logRating=logScale(rating_initial)
+    rating.log=logRating
     return rating
 }
+
+
 
 function GetPosition(info) {
     var comitet=info.committees[0],

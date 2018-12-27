@@ -59,9 +59,6 @@ function dataDepMap(rawdata) {
         groups.length==0 ? groups=[7917] : groups // кто без групп? -> в группу "Не выявлено"
         var rating=Math.floor(Math.random() * (10-4))+4
         rating=GetRating(d.person)
-        rating=rating.podpis/rating.vnes*10
-        if (rating<4 || !rating) rating=4
-        console.log(rating)
         return groups.map((b) => {
             myGroups.add(b)
             /*the set provide unique values of lobby groups*/
@@ -71,7 +68,7 @@ function dataDepMap(rawdata) {
                 fraction:d.fraction,
                 gender:d.gender,
                 group: b,
-                rating: rating,
+                rating: rating.log,
                 election_method:d.election_method,
                 committees:d.committees,
                 convocations:d.convocations.length!=0 ? d.convocations.length : 1
@@ -418,7 +415,7 @@ function doSomething() {
         //first five largest in each group
         var groups= [7624, 7667, 7753, 7801, 7813, null]
         var showedClustersNumbers=[]
-        var showedClusters=[]
+        var showedClusters
         groups.forEach(group=>{
             showedClustersNumbers+=clusters
                 .filter(x=>x.clusterParent==group)
@@ -672,13 +669,6 @@ function doSomething() {
         showLabel()
     }
 
-    function overLabel(d) {
-        d3.select(this).style("display","none")
-    }
-
-    function outLabel(d) {
-        d3.select(this).style("display","block")
-    }
 
 
 
@@ -838,6 +828,8 @@ function doSomething() {
 
             if (d3.selectAll('#gender .is-active').node()!=null)
                 b_gender=d3.select('#gender .is-active').property('value')
+
+            //if (i_search!="")
 
             result=circles.filter(x=>
                 ((i_search!="") ?
