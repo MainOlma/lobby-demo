@@ -8,7 +8,7 @@ html{overflow-y: auto;}
 
 body{
   background: $color-white;
-  font-family: "HeliosCondRegular", "Helvetica Neue";
+  font-family: "Helios-Cond-Regular", "Helvetica Neue";
   line-height: 1;
   overflow: hidden;
 }
@@ -36,7 +36,7 @@ header {
     h1 {
       font-size: 44px;
       text-transform: uppercase;
-      font-family: "HeliosCondBold", "Helvetica Neue";
+      font-family: "Helios-Cond-Bold", "Helvetica Neue", serif;
       @include until($tablet){
         font-size: 20px;
       }
