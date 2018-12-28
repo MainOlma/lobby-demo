@@ -54,6 +54,15 @@ Promise.all(promises).then(function (values) {
 
 
 function dataDepMap(rawdata) {
+    Object.defineProperties(Array.prototype, {
+        'flatMap': {
+            value: function (lambda) {
+                return Array.prototype.concat.apply([], this.map(lambda));
+            },
+            writeable: false,
+            enumerable: false
+        }
+    });
     data = rawdata.flatMap((d) => {
         groups = d.groups
         groups.length==0 ? groups=[7917] : groups // кто без групп? -> в группу "Не выявлено"
